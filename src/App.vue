@@ -2,15 +2,35 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-07 22:11:34
+ * @LastEditTime: 2022-08-08 15:49:17
  * @FilePath: \campus-grocery\src\App.vue
  * @Description: App.vue文件
 -->
 <template>
-  <div id="app">
-    <router-view />
+  <div
+    id="app"
+    v-loading="loading"
+    :element-loading-text="loadingText"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
+    <el-container>
+      <header-nav />
+      <router-view />
+    </el-container>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+import HeaderNav from './components/nav/HeaderNav.vue'
+export default {
+  components: { HeaderNav },
+  computed: {
+    ...mapState(['loading', 'loadingText']),
+  },
+}
+</script>
 
 <style lang="scss">
 html,
@@ -32,18 +52,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  .el-container {
+    background-color: #e4e7ed;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
   }
 }
 </style>

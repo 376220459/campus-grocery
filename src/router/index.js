@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-08 15:02:15
+ * @LastEditTime: 2022-08-08 15:25:04
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
@@ -14,6 +14,7 @@ import VueCookies from 'vue-cookies'
 import { checkAuthToken } from '@/apis/userAccount'
 import resHandle from '@/utils/resHandle'
 import { Message } from 'element-ui'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -46,10 +47,20 @@ function toLoginPage() {
   VueCookies.remove('auth_token')
 
   // 延迟跳转,给用户足够的时间看提示信息
+  store.commit('updateLoading', {
+    loading: true,
+    loadingText: '正在跳转至登录界面...',
+  })
+
   setTimeout(() => {
+    store.commit('updateLoading', {
+      loading: false,
+      loadingText: '',
+    })
+
     const loginURL = `${process.env.VUE_APP_LOGIN}?redirect=${window.location.href}`
     window.location.href = loginURL
-  }, 2000)
+  }, 3000)
 }
 
 // 因为本系统所有页面均需要登录才可以查看，所以设置全局路由的登录状态验证
