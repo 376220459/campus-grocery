@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-08 19:12:44
+ * @LastEditTime: 2022-08-09 22:15:43
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -11,6 +11,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'element-ui/lib/theme-chalk/index.css'
+import '@/assets/iconfont/iconfont.css'
+import '@/assets/iconfont/iconfont.js'
 
 import {
   Container,

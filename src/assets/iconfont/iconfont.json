@@ -1,0 +1,114 @@
+{
+  "id": "3577135",
+  "name": "campus-grocery",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11372651",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e8ad",
+      "unicode_decimal": 59565
+    },
+    {
+      "icon_id": "11372657",
+      "name": "电影票",
+      "font_class": "dianyingpiao",
+      "unicode": "e8ae",
+      "unicode_decimal": 59566
+    },
+    {
+      "icon_id": "11372687",
+      "name": "评论",
+      "font_class": "pinglun",
+      "unicode": "e8b4",
+      "unicode_decimal": 59572
+    },
+    {
+      "icon_id": "11372726",
+      "name": "消息中心",
+      "font_class": "xiaoxizhongxin",
+      "unicode": "e8be",
+      "unicode_decimal": 59582
+    },
+    {
+      "icon_id": "2325938",
+      "name": "退出",
+      "font_class": "tuichu",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "7171413",
+      "name": "创享钻石",
+      "font_class": "chuangxiangzhizunvip",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "7171440",
+      "name": "创享青铜vip1",
+      "font_class": "chuangxiangqingtongvip",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "7171464",
+      "name": "创享白银vip2",
+      "font_class": "chuangxiangbaiyinvip",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "7171471",
+      "name": "创享黄金vip3",
+      "font_class": "chuangxianghuangjinvip",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "7171506",
+      "name": "创享紫金vip2",
+      "font_class": "chuangxiangzijinvip",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "7171653",
+      "name": "创享钻石vip5",
+      "font_class": "chuangxiangzuanshivip",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "30332747",
+      "name": "icon-公告",
+      "font_class": "icon-gonggao",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "30336469",
+      "name": "icon-手机",
+      "font_class": "icon-shouji",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "30336874",
+      "name": "icon-账号",
+      "font_class": "icon-zhanghao",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "30339126",
+      "name": "icon-编辑",
+      "font_class": "icon-bianji",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    }
+  ]
+}

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-08 15:49:17
+ * @LastEditTime: 2022-08-09 15:01:01
  * @FilePath: \campus-grocery\src\App.vue
  * @Description: App.vue文件
 -->
@@ -38,10 +38,21 @@ body {
   width: 100%;
   height: 100%;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.icon,
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #app {

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-08 15:25:04
+ * @LastEditTime: 2022-08-09 21:06:55
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
@@ -13,8 +13,8 @@ import HomePage from '../views/HomePage.vue'
 import VueCookies from 'vue-cookies'
 import { checkAuthToken } from '@/apis/userAccount'
 import resHandle from '@/utils/resHandle'
-import { Message } from 'element-ui'
 import store from '@/store'
+import { Message } from 'element-ui'
 
 Vue.use(VueRouter)
 
@@ -67,7 +67,7 @@ function toLoginPage() {
 router.beforeEach(async (to, from, next) => {
   const authToken = VueCookies.get('auth_token')
   if (!authToken) {
-    Message.warning('您还没有登录，请先登录')
+    Message.warning(`您还没有登录，请先登录`)
     toLoginPage()
   } else {
     const res = await checkAuthToken()

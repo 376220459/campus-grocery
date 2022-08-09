@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-08 19:40:40
+ * @LastEditTime: 2022-08-09 20:07:11
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -14,129 +14,207 @@
       alt="logo"
       @click="toHomePage"
     />
-    <el-input
-      placeholder="看看今天有什么校园大事件"
-      v-model="searchInput"
-      class="input-with-select"
-      size="small"
-    >
-      <el-select
-        v-model="selectValue"
-        slot="prepend"
+
+    <div class="search-input">
+      <el-input
+        placeholder="看看今天有什么校园大事件"
+        v-model="searchInput"
+        class="input-with-select"
         size="small"
       >
-        <el-option
-          label="二手交易"
-          value="transaction_posts"
-        ></el-option>
-        <el-option
-          label="趣闻轶事"
-          value="campus_posts"
-        ></el-option>
-        <el-option
-          label="失物招领"
-          value="lost_posts"
-        ></el-option>
-        <el-option
-          label="广告推广"
-          value="advert_posts"
-        ></el-option>
-      </el-select>
+        <el-select
+          v-model="selectValue"
+          slot="prepend"
+          size="small"
+        >
+          <el-option
+            label="二手交易"
+            value="transaction_posts"
+          ></el-option>
+          <el-option
+            label="趣闻轶事"
+            value="campus_posts"
+          ></el-option>
+          <el-option
+            label="失物招领"
+            value="lost_posts"
+          ></el-option>
+          <el-option
+            label="广告推广"
+            value="advert_posts"
+          ></el-option>
+        </el-select>
+      </el-input>
+
       <el-button
-        slot="append"
         icon="el-icon-search"
-        type="small"
+        size="small"
+        type="warning"
       ></el-button>
-    </el-input>
+    </div>
 
     <div class="user">
       <el-popover
         placement="bottom"
-        width="200"
-        trigger="click"
+        width="240"
+        trigger="hover"
       >
         <img
           class="user-head"
-          src="@/assets/images/Grocery-Logo.png"
-          alt="headImg"
+          :src="userInfo.head"
+          alt="head"
           slot="reference"
         />
 
         <div class="user-info">
-          <div class="header-info">
-            <p class="nickname">昵称</p>
+          <div class="info-header">
+            <p class="nickname">{{ userInfo.nickname }}</p>
             <div class="vip">
-              <img
-                src="@/assets/images/vip.png"
-                alt="vip"
-                width="25px"
-                v-if="true"
-              />
-              <img
-                src="@/assets/images/novip.png"
-                alt="novip"
-                width="25px"
-                v-else
-              />
-              <p>VIP8</p>
+              <svg
+                class="icon vip-icon"
+                aria-hidden="true"
+              >
+                <use :xlink:href="vipList[userInfo.vip - 1]"></use>
+              </svg>
             </div>
           </div>
 
           <el-divider></el-divider>
 
-          <div>
-            <div>信誉分</div>
-            <div>获赞</div>
+          <div class="info-overview">
+            <div class="overview">
+              <p class="overview-num">{{ userInfo.credit }}</p>
+              <p class="overview-text">信誉分</p>
+            </div>
+            <div class="overview">
+              <p class="overview-num">{{ userInfo.supportNum }}</p>
+              <p class="overview-text">获赞</p>
+            </div>
           </div>
 
           <el-divider></el-divider>
 
-          <div>
-            <p>个人中心</p>
-            <p>账号信息</p>
-            <p>我的发布</p>
-            <p>我的互动</p>
+          <div class="info-nav">
+            <div class="nav">
+              <svg
+                class="icon nav-icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon-zhanghao"></use>
+              </svg>
+              <p>个人中心</p>
+            </div>
+
+            <div class="nav">
+              <svg
+                class="icon nav-icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon-shouji"></use>
+              </svg>
+              <p>账号信息</p>
+            </div>
+
+            <div class="nav">
+              <svg
+                class="icon nav-icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon-bianji"></use>
+              </svg>
+              <p>我的发布</p>
+            </div>
+
+            <div class="nav">
+              <svg
+                class="icon nav-icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon-gonggao"></use>
+              </svg>
+              <p>我的互动</p>
+            </div>
           </div>
 
           <el-divider></el-divider>
 
-          <div>退出</div>
+          <div class="logout">
+            <div class="logout-container">
+              <i class="icon icon-tuichu" />
+              <p>退出</p>
+            </div>
+          </div>
         </div>
       </el-popover>
 
-      <el-badge is-dot>
+      <el-badge :is-dot="unreadMessageSign">
         <el-popover
           placement="bottom"
-          width="80"
+          width="150"
           trigger="hover"
         >
           <div
             slot="reference"
-            class="user-message"
+            class="user-message-text"
           >
             消息
           </div>
 
-          <div>我是一段文字我是一段文字我是一段文字我是一段文字我是一段文字</div>
-        </el-popover>
-      </el-badge>
+          <div class="message">
+            <el-badge
+              :value="userInfo.unreadSupportNum > 0 ? userInfo.unreadSupportNum : null"
+              :max="99"
+            >
+              <i class="iconfont icon-dianzan" />
+              <p>点赞</p>
+            </el-badge>
 
-      <el-badge is-dot>
-        <el-popover
-          placement="bottom"
-          width="80"
-          trigger="hover"
-        >
-          <div
-            slot="reference"
-            class="join-vip"
-          >
-            加入会员
+            <el-badge
+              :value="userInfo.unreadCommentNum > 0 ? userInfo.unreadCommentNum : null"
+              :max="99"
+            >
+              <i class="iconfont icon-pinglun" />
+              <p>评论</p>
+            </el-badge>
+
+            <el-badge
+              :value="userInfo.unreadBuyNum > 0 ? userInfo.unreadBuyNum : null"
+              :max="99"
+            >
+              <i class="iconfont icon-dianyingpiao" />
+              <p>求购</p>
+            </el-badge>
+
+            <el-badge
+              :value="userInfo.unreadSystemMessageNum > 0 ? userInfo.unreadSystemMessageNum : null"
+              :max="99"
+            >
+              <i class="iconfont icon-xiaoxizhongxin" />
+              <p>系统通知</p>
+            </el-badge>
           </div>
-
-          <div>我是一段文字我是一段文字我是一段文字我是一段文字我是一段文字</div>
         </el-popover>
       </el-badge>
+
+      <el-popover
+        placement="bottom"
+        width="370"
+        trigger="click"
+        style="background: transparent"
+      >
+        <div
+          slot="reference"
+          class="join-vip-text"
+        >
+          入驻会员
+        </div>
+
+        <img
+          src="@/assets/images/vip.jpg"
+          alt="vip"
+          width="340"
+        />
+      </el-popover>
 
       <el-button
         type="primary"
@@ -148,6 +226,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'HeaderNav',
 
@@ -155,7 +235,25 @@ export default {
     return {
       searchInput: '',
       selectValue: 'transaction_posts',
+      vipList: [
+        '#icon-chuangxiangqingtongvip',
+        '#icon-chuangxiangbaiyinvip',
+        '#icon-chuangxianghuangjinvip',
+        '#icon-chuangxiangzijinvip',
+        '#icon-chuangxiangzuanshivip',
+        '#icon-chuangxiangzhizunvip',
+      ],
     }
+  },
+
+  computed: {
+    ...mapState(['userInfo']),
+
+    // 是否有未读消息的标志
+    unreadMessageSign() {
+      const { unreadSupportNum, unreadCommentNum, unreadBuyNum, unreadSystemMessageNum } = this.userInfo
+      return unreadSupportNum > 0 || unreadCommentNum > 0 || unreadBuyNum > 0 || unreadSystemMessageNum > 0
+    },
   },
 
   methods: {
@@ -167,12 +265,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@mixin point-text {
+@mixin scale-text {
   &:hover {
-    cursor: pointer;
-    color: rgb(255, 0, 0);
+    transform: scale(1.1);
+    color: #409eff;
   }
 }
+
 .el-header {
   background: white;
   display: flex;
@@ -183,12 +282,16 @@ export default {
     cursor: pointer;
   }
 
-  .el-input {
-    min-width: 300px;
-    max-width: 800px;
+  .search-input {
+    width: 850px;
     margin: 0 20px;
-    .el-select {
-      width: 100px;
+    display: flex;
+    .el-input {
+      min-width: 300px;
+      max-width: 800px;
+      .el-select {
+        width: 100px;
+      }
     }
   }
 
@@ -206,23 +309,38 @@ export default {
       cursor: pointer;
       display: flex;
       align-items: center;
+    }
+
+    .user-message-text {
+      cursor: pointer;
 
       &:hover {
-        transform: scale(1.5);
-        margin-top: 10px;
+        color: #409eff;
       }
     }
-    .user-message,
-    .join-vip {
-      @include point-text;
+
+    .join-vip-text {
+      color: #ff3300;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+        color: #ff3300e3;
+        transform: scale(1.1);
+      }
     }
   }
 }
 
 .user-info {
-  .header-info {
+  .el-divider {
+    margin: 15px 0;
+  }
+
+  .info-header {
     .nickname {
-      font-size: 30px;
+      font-size: 21px;
+      color: black;
       text-align: center;
       margin: 5px 0 10px 0;
     }
@@ -230,9 +348,103 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .vip-icon {
+        height: 25px;
+      }
+    }
+  }
+
+  .info-overview {
+    display: flex;
+    justify-content: space-around;
+    .overview {
+      @include scale-text;
+      cursor: pointer;
+
       p {
+        text-align: center;
+      }
+
+      .overview-num {
+        color: black;
+        font-weight: bold;
+        font-size: 21px;
+      }
+
+      .overview-text {
+        color: #909399;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .info-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    .nav {
+      @include scale-text;
+      display: flex;
+      align-items: center;
+      margin: 15px 0 0 20px;
+      cursor: pointer;
+
+      &:nth-of-type(1) {
+        margin-top: 5px;
+      }
+
+      .nav-icon {
+        width: 15px;
+        height: 15px;
+      }
+
+      p {
+        font-size: 15px;
         margin-left: 5px;
       }
+    }
+  }
+
+  .logout {
+    display: flex;
+    .logout-container {
+      @include scale-text;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .icon {
+        font-size: 18px;
+        margin: 3px 5px 0 20px;
+      }
+
+      p {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .el-badge {
+    @include scale-text;
+    padding: 3px 3px 0 0;
+    margin: 15px 0 0 15px;
+    font-size: 15px;
+    display: flex;
+    cursor: pointer;
+
+    i {
+      margin-right: 5px;
+    }
+
+    &:nth-of-type(1) {
+      margin-top: 10px;
     }
   }
 }
