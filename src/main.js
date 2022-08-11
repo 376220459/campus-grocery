@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-09 22:15:43
+ * @LastEditTime: 2022-08-10 21:23:44
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -29,6 +29,8 @@ import {
   Carousel,
   CarouselItem,
   Divider,
+  Tooltip,
+  Pagination,
 } from 'element-ui'
 
 Vue.use(Container)
@@ -43,6 +45,8 @@ Vue.use(Badge)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.use(Divider)
+Vue.use(Tooltip)
+Vue.use(Pagination)
 Vue.use(Loading.directive)
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

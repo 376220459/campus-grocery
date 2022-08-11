@@ -2,27 +2,30 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-07 22:12:15
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-09 23:00:45
+ * @LastEditTime: 2022-08-10 21:49:28
  * @FilePath: \campus-grocery\src\views\HomePage.vue
  * @Description: 校园杂货铺首页
 -->
 <template>
   <el-main>
-    <div class="posts-show">
-      <div class="show-bar">失物招领</div>
-      <AdvertBar />
-      <div class="show-bar">趣闻轶事</div>
+    <AdvertBar />
+    <div class="main-container">
+      <CampusBar />
+      <LostBar />
+      <TransactionBar />
     </div>
-    <div>二手交易</div>
   </el-main>
 </template>
 
 <script>
-import AdvertBar from '@/components/others/AdvertBar.vue'
+import AdvertBar from '@/components/home/AdvertBar.vue'
+import CampusBar from '@/components/home/CampusBar.vue'
+import LostBar from '@/components/home/LostBar.vue'
+import TransactionBar from '@/components/home/TransactionBar.vue'
 export default {
   name: 'HomePage',
 
-  components: { AdvertBar },
+  components: { AdvertBar, CampusBar, LostBar, TransactionBar },
 
   data() {
     return {}
@@ -34,18 +37,12 @@ export default {
 
 <style scoped lang="scss">
 .el-main {
-  .posts-show {
-    height: 350px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .show-bar {
-      min-width: 400px;
-      height: 300px;
-      border: 1px solid black;
-      margin: 0 20px;
-      background-color: white;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .main-container {
+    position: relative;
   }
 }
 </style>

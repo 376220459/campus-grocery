@@ -2,12 +2,12 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-09 20:07:11
+ * @LastEditTime: 2022-08-10 22:38:58
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
 <template>
-  <el-header height="50px">
+  <el-header height="70px">
     <img
       class="logo"
       src="@/assets/images/Grocery-Logo.png"
@@ -20,12 +20,10 @@
         placeholder="看看今天有什么校园大事件"
         v-model="searchInput"
         class="input-with-select"
-        size="small"
       >
         <el-select
           v-model="selectValue"
           slot="prepend"
-          size="small"
         >
           <el-option
             label="二手交易"
@@ -48,7 +46,6 @@
 
       <el-button
         icon="el-icon-search"
-        size="small"
         type="warning"
       ></el-button>
     </div>
@@ -216,11 +213,7 @@
         />
       </el-popover>
 
-      <el-button
-        type="primary"
-        size="small"
-        >我要发布</el-button
-      >
+      <el-button type="primary">我要发布</el-button>
     </div>
   </el-header>
 </template>
@@ -279,6 +272,7 @@ export default {
   align-items: center;
 
   .logo {
+    width: 80px;
     cursor: pointer;
   }
 
@@ -296,15 +290,14 @@ export default {
   }
 
   .user {
-    min-width: 300px;
+    min-width: 350px;
     display: flex;
     justify-content: space-around;
     align-items: center;
 
     .user-head {
-      width: 30px;
-      height: 30px;
-      border: 1px solid black;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;

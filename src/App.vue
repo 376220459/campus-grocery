@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-09 15:01:01
+ * @LastEditTime: 2022-08-10 16:21:05
  * @FilePath: \campus-grocery\src\App.vue
  * @Description: App.vue文件
 -->
@@ -65,7 +65,7 @@ body {
   color: #2c3e50;
 
   .el-container {
-    background-color: #e4e7ed;
+    background-color: #f2f6fc;
     width: 100%;
     height: 100%;
     flex-direction: column;
