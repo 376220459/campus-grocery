@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-10 22:38:58
+ * @LastEditTime: 2022-08-11 20:16:20
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -213,7 +213,12 @@
         />
       </el-popover>
 
-      <el-button type="primary">我要发布</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-edit-outline"
+        @click="toPostPage"
+        >我要发布</el-button
+      >
     </div>
   </el-header>
 </template>
@@ -250,8 +255,14 @@ export default {
   },
 
   methods: {
+    // 前往主页
     toHomePage() {
       window.location.href = '/home'
+    },
+
+    // 前往发布帖界面
+    toPostPage() {
+      this.$router.push('/post')
     },
   },
 }

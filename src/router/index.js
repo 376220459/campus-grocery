@@ -2,19 +2,21 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-09 21:06:55
+ * @LastEditTime: 2022-08-12 01:24:33
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import ErrorPage from '../views/ErrorPage.vue'
-import HomePage from '../views/HomePage.vue'
 import VueCookies from 'vue-cookies'
 import { checkAuthToken } from '@/apis/userAccount'
 import resHandle from '@/utils/resHandle'
 import store from '@/store'
 import { Message } from 'element-ui'
+
+import ErrorPage from '../views/ErrorPage.vue'
+import HomePage from '../views/HomePage.vue'
+import PostPage from '../views/PostPage.vue'
 
 Vue.use(VueRouter)
 
@@ -32,6 +34,11 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomePage,
+  },
+  {
+    path: '/post',
+    name: 'post',
+    component: PostPage,
   },
 ]
 
@@ -76,9 +83,6 @@ router.beforeEach(async (to, from, next) => {
         next()
       },
       warningHandle: () => {
-        toLoginPage()
-      },
-      errorHandle: () => {
         toLoginPage()
       },
     })

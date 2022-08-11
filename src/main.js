@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-10 21:23:44
+ * @LastEditTime: 2022-08-11 22:27:45
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -31,6 +31,15 @@ import {
   Divider,
   Tooltip,
   Pagination,
+  Tabs,
+  TabPane,
+  Form,
+  FormItem,
+  RadioGroup,
+  Radio,
+  Switch,
+  Upload,
+  Dialog,
 } from 'element-ui'
 
 Vue.use(Container)
@@ -47,6 +56,15 @@ Vue.use(CarouselItem)
 Vue.use(Divider)
 Vue.use(Tooltip)
 Vue.use(Pagination)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(RadioGroup)
+Vue.use(Radio)
+Vue.use(Switch)
+Vue.use(Upload)
+Vue.use(Dialog)
 Vue.use(Loading.directive)
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

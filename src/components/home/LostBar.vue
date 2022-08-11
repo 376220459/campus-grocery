@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-10 23:49:09
+ * @LastEditTime: 2022-08-11 15:37:11
  * @FilePath: \campus-grocery\src\components\home\LostBar.vue
  * @Description: 失物招领栏组件
 -->
@@ -81,10 +81,12 @@ export default {
   },
 
   methods: {
+    // 跳转至某个失物招领帖子
     toLost(lostID) {
       alert(`前往失物招领ID：${lostID}`)
     },
 
+    // 跳转至失物招领页面
     toLostPosts() {
       alert(`前往失物招领页面`)
     },
@@ -96,14 +98,14 @@ export default {
 .lost-bar {
   position: fixed;
   margin-top: 330px;
-  margin-left: 1010px;
+  margin-left: 1210px;
   width: 400px;
   min-width: 400px;
   height: 350px;
   padding: 5px 0;
   border-radius: 5px;
   box-shadow: 0px 0px 15px #00000071;
-  background: #d1e9cce1;
+  background-color: rgba(255, 255, 255, 0.075);
 
   .more-text {
     position: absolute;
@@ -124,6 +126,7 @@ export default {
 
   .el-carousel {
     margin-top: -30px;
+    overflow: hidden;
     .el-carousel__item {
       display: flex;
       flex-direction: column;

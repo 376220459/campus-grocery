@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-10 23:02:54
+ * @LastEditTime: 2022-08-11 18:04:21
  * @FilePath: \campus-grocery\src\components\home\CampusBar.vue
  * @Description: 校园趣闻轶事栏组件
 -->
@@ -25,6 +25,7 @@
       <li
         v-for="campus in campusList"
         :key="campus.id"
+        @click="toCampusPost(campus.id)"
       >
         <span class="title-nav">{{ '>>' }}</span>
         <p class="title">{{ campus.title }}</p>
@@ -75,10 +76,12 @@ export default {
   },
 
   methods: {
-    toCampus(CampusID) {
+    // 跳转至某个校园趣闻轶事帖子
+    toCampusPost(CampusID) {
       alert(`前往校园趣闻轶事ID：${CampusID}`)
     },
 
+    // 跳转至校园趣闻轶事帖页面
     toCampusPosts() {
       alert(`前往校园趣闻轶事页面`)
     },
@@ -89,7 +92,7 @@ export default {
 <style scoped lang="scss">
 .campus-bar {
   position: fixed;
-  margin-left: 1010px;
+  margin-left: 1210px;
   width: 400px;
   min-width: 400px;
   height: 300px;
@@ -97,7 +100,7 @@ export default {
   padding: 5px 0;
   border-radius: 5px;
   box-shadow: 0px 0px 15px #00000071;
-  background: #c0dbb481;
+  background-color: rgba(255, 255, 255, 0.11);
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-10 16:21:05
+ * @LastEditTime: 2022-08-11 15:47:49
  * @FilePath: \campus-grocery\src\App.vue
  * @Description: App.vue文件
 -->
@@ -43,6 +43,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
 }
 
 .icon,
@@ -65,7 +66,7 @@ body {
   color: #2c3e50;
 
   .el-container {
-    background-color: #f2f6fc;
+    background-color: #f0f6ff;
     width: 100%;
     height: 100%;
     flex-direction: column;
