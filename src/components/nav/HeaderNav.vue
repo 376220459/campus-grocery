@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 20:16:20
+ * @LastEditTime: 2022-08-13 03:15:05
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -83,9 +83,15 @@
               <p class="overview-num">{{ userInfo.credit }}</p>
               <p class="overview-text">信誉分</p>
             </div>
+
             <div class="overview">
               <p class="overview-num">{{ userInfo.supportNum }}</p>
               <p class="overview-text">获赞</p>
+            </div>
+
+            <div class="overview">
+              <p class="overview-num">{{ userInfo.ledou }}</p>
+              <p class="overview-text">乐豆</p>
             </div>
           </div>
 

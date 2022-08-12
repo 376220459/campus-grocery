@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 15:47:49
+ * @LastEditTime: 2022-08-12 16:00:21
  * @FilePath: \campus-grocery\src\App.vue
  * @Description: App.vue文件
 -->
@@ -45,6 +45,22 @@ body {
   box-sizing: border-box;
   user-select: none;
 }
+
+// ---------------------------------分割线--------------------------------------------
+// 全局更改element-ui样式
+
+//设置全局的照片墙照片缩放格式
+.el-upload-list__item-thumbnail {
+  object-fit: scale-down;
+}
+
+//设置全局表单每行的盒模型为flex
+.el-form-item__content {
+  display: flex;
+  align-items: center;
+}
+
+// ---------------------------------分割线--------------------------------------------
 
 .icon,
 .iconfont {

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 20:21:30
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-12 01:08:40
+ * @LastEditTime: 2022-08-13 03:54:26
  * @FilePath: \campus-grocery\src\components\post\TransactionPostForm.vue
  * @Description: 发布二手交易贴子表单组件
 -->
@@ -11,7 +11,7 @@
     ref="transactionPostForm"
     :model="transactionPostForm.data"
     :rules="transactionPostForm.rules"
-    label-width="110px"
+    label-width="120px"
   >
     <el-form-item
       label="帖子标题："
@@ -32,7 +32,6 @@
       <el-select
         v-model="transactionPostForm.data.productCategory"
         placeholder="请选择"
-        style="width: 100%"
       >
         <el-option
           v-for="(productCategory, index) in productCategoryList"
@@ -51,7 +50,6 @@
       <el-select
         v-model="transactionPostForm.data.condition"
         placeholder="请选择"
-        style="width: 100%"
       >
         <el-option
           v-for="(condition, index) in conditionList"
@@ -66,21 +64,25 @@
     <el-form-item
       label="出售价格："
       prop="price"
+      class="price-container"
     >
+      <transition
+        name="price-input"
+        mode="out-in"
+      >
+        <el-input
+          v-if="!isNegotiable"
+          v-model="transactionPostForm.data.price"
+          placeholder="请填写价格"
+        ></el-input>
+      </transition>
+
       <el-switch
         v-model="isNegotiable"
         active-text="价格面议"
         @change="changePirceSelect"
-        style="width: 100%"
       >
       </el-switch>
-
-      <el-input
-        v-if="!isNegotiable"
-        v-model="transactionPostForm.data.price"
-        placeholder="请填写价格"
-        style="width: 100%"
-      ></el-input>
     </el-form-item>
 
     <el-form-item
@@ -115,14 +117,29 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item label="添加图片：">
-      <el-upload
-        action="https://upload-z1.qiniup.com"
-        list-type="picture-card"
-        :data="{ token: uploadToken, key: 'transaction/123' }"
-      >
-        <i class="el-icon-plus"></i>
-      </el-upload>
+    <el-form-item>
+      <p slot="label">
+        <span style="color: red">*</span>
+        {{ `上传主图${transactionPostForm.data.mainImg ? 1 : 0}/1：` }}
+      </p>
+      <BaseImgUpload
+        ref="BaseImgUploadMainImg"
+        tips="发布二手交易，主图比例必须为1:1，否则图片会被裁剪，拉低展示效果。"
+        :limitNum="1"
+        :postType="transactionPostForm.data.postType"
+        @uploaded="uploadedMainImg"
+        @remove="removeMainImg"
+      />
+    </el-form-item>
+
+    <el-form-item :label="`添加图片${transactionPostForm.data.imgs.length}/6：`">
+      <BaseImgUpload
+        ref="BaseImgUploadContent"
+        :limitNum="6"
+        :postType="transactionPostForm.data.postType"
+        @uploaded="uploadedContent"
+        @remove="removeImgs"
+      />
     </el-form-item>
 
     <el-form-item
@@ -141,9 +158,9 @@
 
     <el-form-item>
       <el-button
+        class="submit"
         type="primary"
-        @click="test"
-        style="width: 100%"
+        @click="postHandle"
         >发布</el-button
       >
     </el-form-item>
@@ -161,11 +178,15 @@ import {
   telNumberRule,
   contentRule,
 } from '@/utils/rules'
-import { getUploadToken } from '@/apis/qiniu'
+import BaseImgUpload from '@/components/base/BaseImgUpload.vue'
+import { mapState } from 'vuex'
+import { postTransaction } from '@/apis/transactionPost'
 import resHandle from '@/utils/resHandle'
 
 export default {
   name: 'TransactionPostForm',
+
+  components: { BaseImgUpload },
 
   data() {
     return {
@@ -177,7 +198,8 @@ export default {
           productCategory: '',
           title: '',
           content: '',
-          pictures: [],
+          mainImg: '',
+          imgs: [],
           condition: '',
           price: '',
           transactionPlace: '',
@@ -199,30 +221,73 @@ export default {
       productCategoryList: ['书籍资料', '日常用品', '电子设备', '体育用品', '其它'],
       conditionList: ['全新', '九成新', '七成新', '五成新', '其他'],
       isNegotiable: false,
-      uploadToken: '',
     }
   },
 
+  computed: {
+    ...mapState(['userInfo']),
+  },
+
   methods: {
+    // 更改价格面议按钮时触发
     changePirceSelect(isNegotiable) {
       if (isNegotiable) {
+        // 如果面议，则更换价格的校验规则，并立即触发规则
         this.transactionPostForm.rules.price = [{ required: true, message: '请填写价格', trigger: 'blur' }]
         this.transactionPostForm.data.price = '面议'
+
+        this.$refs.transactionPostForm.validateField('price')
       } else {
+        // 如果不面议，则更换到价格的初始校验规则
         this.transactionPostForm.rules.price = priceRule
         this.transactionPostForm.data.price = ''
       }
-
-      this.$refs.transactionPostForm.validateField('price')
     },
 
-    async test() {
-      const res = await getUploadToken({ bucket: 'campus-grocery' })
-      resHandle(res, {
-        successHandle: () => {
-          this.uploadToken = res.data.uploadToken
-        },
+    // 删除主图回调
+    removeMainImg() {
+      this.transactionPostForm.data.mainImg = ''
+    },
+
+    // 删除内容图片回调
+    removeImgs(url) {
+      const index = this.transactionPostForm.data.imgs.indexOf(url)
+      this.transactionPostForm.data.imgs.splice(index, 1)
+    },
+
+    // 上传主图回调
+    uploadedMainImg(imgs) {
+      this.transactionPostForm.data.mainImg = imgs[0]
+    },
+
+    // 上传内容图片回调
+    uploadedContent(imgs) {
+      this.transactionPostForm.data.imgs = imgs
+    },
+
+    // 发布帖子
+    postHandle() {
+      this.$refs.transactionPostForm.validate(async valid => {
+        if (!valid) {
+          return false
+        }
+
+        if (this.transactionPostForm.data.mainImg) {
+          this.fillFormData()
+          const res = await postTransaction(this.transactionPostForm.data)
+          resHandle(res)
+          alert('上传成功的后续...')
+        } else {
+          this.$message.warning('必须上传主图')
+        }
       })
+    },
+
+    // 补全不需要用户手动输入的表单数据
+    fillFormData() {
+      const data = this.transactionPostForm.data
+      const now = Date.now()
+      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd HH:MM:ss')]
     },
   },
 }
@@ -231,5 +296,29 @@ export default {
 <style scoped lang="scss">
 .el-form {
   padding-top: 10px;
+
+  .price-container {
+    // vue自带动画效果实现
+    .price-input-enter-active,
+    .price-input-leave-active {
+      transition: all 1s;
+    }
+
+    .price-input-enter,
+    .price-input-leave-to {
+      width: 0;
+      opacity: 0;
+    }
+
+    .el-switch {
+      width: 150px;
+      height: 40px;
+      margin-left: 20px;
+    }
+  }
+
+  .submit {
+    width: 100%;
+  }
 }
 </style>
