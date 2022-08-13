@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 03:15:05
+ * @LastEditTime: 2022-08-13 20:19:47
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -301,7 +301,7 @@ export default {
       min-width: 300px;
       max-width: 800px;
       .el-select {
-        width: 100px;
+        width: 110px;
       }
     }
   }

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-09 22:12:06
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 18:07:33
+ * @LastEditTime: 2022-08-13 21:40:12
  * @FilePath: \campus-grocery\src\components\home\AdvertBar.vue
  * @Description: 广告栏组件
 -->
@@ -62,7 +62,7 @@ export default {
   methods: {
     // 跳转至某个广告帖子
     toAdvertPost(advertID) {
-      alert(`前往广告ID：${advertID}`)
+      this.$router.push(`/showPost?postType=advert&id=${advertID}`)
     },
   },
 }
@@ -90,6 +90,7 @@ export default {
         width: 400px;
         height: 225px;
         border-radius: 5px;
+        object-fit: cover;
       }
     }
   }

@@ -2,16 +2,13 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 19:41:00
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 23:03:09
+ * @LastEditTime: 2022-08-13 21:33:42
  * @FilePath: \campus-grocery\src\views\PostPage.vue
  * @Description: 发布帖子界面
 -->
 <template>
   <el-main>
-    <el-tabs
-      v-model="postType"
-      @tab-click="changePostType"
-    >
+    <el-tabs v-model="postType">
       <el-tab-pane name="transaction">
         <span slot="label">
           <i class="el-icon-edit-outline"></i>
@@ -27,7 +24,7 @@
           校园趣闻轶事
         </span>
 
-        发布校园趣闻轶事
+        <CampusPostForm />
       </el-tab-pane>
 
       <el-tab-pane name="lost">
@@ -36,7 +33,7 @@
           失物招领
         </span>
 
-        发布失物招领
+        <LostPostForm />
       </el-tab-pane>
 
       <el-tab-pane name="advert">
@@ -45,7 +42,7 @@
           广告
         </span>
 
-        发布广告
+        <AdvertPostForm />
       </el-tab-pane>
     </el-tabs>
   </el-main>
@@ -53,11 +50,17 @@
 
 <script>
 import TransactionPostForm from '@/components/post/TransactionPostForm.vue'
+import CampusPostForm from '@/components/post/CampusPostForm.vue'
+import LostPostForm from '@/components/post/LostPostFormAlias.vue'
+import AdvertPostForm from '@/components/post/AdvertPostForm.vue'
+import getUploadTokenHandle from '@/utils/getUploadTokenHandle'
+import resHandle from '@/utils/resHandle'
+resHandle
 
 export default {
   name: 'PostPage',
 
-  components: { TransactionPostForm },
+  components: { TransactionPostForm, CampusPostForm, LostPostForm, AdvertPostForm },
 
   data() {
     return {
@@ -65,10 +68,10 @@ export default {
     }
   },
 
-  methods: {
-    changePostType() {
-      alert(`切换至${this.postType}`)
-    },
+  // 进入发布界面前，获取uploadToken
+  async beforeRouteEnter(to, from, next) {
+    await getUploadTokenHandle()
+    next()
   },
 }
 </script>

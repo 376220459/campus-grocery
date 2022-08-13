@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-05 15:42:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 23:33:14
+ * @LastEditTime: 2022-08-13 19:37:28
  * @FilePath: \campus-grocery\src\utils\rules.js
  * @Description: 字段验证规则
  */
@@ -92,7 +92,7 @@ const priceRule = [
     trigger: 'blur',
   },
 ]
-const transactionPlaceRule = [{ required: true, message: '请填写地址', trigger: 'blur' }]
+const placeRule = [{ required: true, message: '请填写地址', trigger: 'blur' }]
 const contentRule = [{ required: true, message: '请填写内容', trigger: 'blur' }]
 
 export {
@@ -109,6 +109,6 @@ export {
   productCategoryRule,
   conditionRule,
   priceRule,
-  transactionPlaceRule,
+  placeRule,
   contentRule,
 }

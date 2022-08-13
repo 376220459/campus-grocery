@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 18:04:21
+ * @LastEditTime: 2022-08-13 21:44:06
  * @FilePath: \campus-grocery\src\components\home\CampusBar.vue
  * @Description: 校园趣闻轶事栏组件
 -->
@@ -78,7 +78,7 @@ export default {
   methods: {
     // 跳转至某个校园趣闻轶事帖子
     toCampusPost(CampusID) {
-      alert(`前往校园趣闻轶事ID：${CampusID}`)
+      this.$router.push(`/showPost?postType=campus&id=${CampusID}`)
     },
 
     // 跳转至校园趣闻轶事帖页面

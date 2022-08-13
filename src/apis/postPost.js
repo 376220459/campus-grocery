@@ -9,9 +9,9 @@
 import http from './http'
 
 // 验证用户登录token接口
-async function postTransaction(payload) {
+async function postPost(payload) {
   try {
-    const res = await http.post('/postTransaction', payload)
+    const res = await http.post('/postPost', payload)
     return res.data
   } catch (error) {
     return {
@@ -21,4 +21,4 @@ async function postTransaction(payload) {
   }
 }
 
-export { postTransaction }
+export { postPost }

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-12 19:59:54
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 02:17:12
+ * @LastEditTime: 2022-08-13 21:36:19
  * @FilePath: \campus-grocery\src\components\base\BaseImgUpload.vue
  * @Description: 基础组件-图片上传
 -->
@@ -38,7 +38,7 @@
 <script>
 import { mapState } from 'vuex'
 import resHandle from '@/utils/resHandle'
-import { getUploadToken, removeImg } from '@/apis/qiniu'
+import { removeImg } from '@/apis/qiniu'
 import _ from 'lodash'
 
 export default {
@@ -85,7 +85,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['userInfo']),
+    ...mapState(['userInfo', 'uploadToken']),
     uploadDomain() {
       return process.env.VUE_APP_QINIU_UPLOAD_DOMAIN
     },
@@ -205,21 +205,11 @@ export default {
         }
       })
     },
-
-    // 从后端获取七牛云的uploadToken
-    async getUploadToken() {
-      const res = await getUploadToken({ bucket: process.env.VUE_APP_BUCKET })
-      return resHandle(res, {
-        successHandle: () => {
-          this.qiniuData.token = res.data.uploadToken
-        },
-      })
-    },
   },
 
-  // 组件创建完成后获取uploadToken
-  async created() {
-    await this.getUploadToken()
+  // 组件挂载后，设置uploadToken
+  mounted() {
+    this.qiniuData.token = this.uploadToken
   },
 }
 </script>

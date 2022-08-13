@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 02:52:41
+ * @LastEditTime: 2022-08-13 16:32:03
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -71,6 +71,7 @@ Vue.use(Loading.directive)
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
 Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$msgbox = MessageBox
 
 Vue.prototype.$dateFormat = dateFormat
 

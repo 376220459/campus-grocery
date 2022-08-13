@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 20:50:59
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 19:38:59
+ * @LastEditTime: 2022-08-13 21:45:15
  * @FilePath: \campus-grocery\src\components\home\TransactionBar.vue
  * @Description: 二手交易组件
 -->
@@ -210,7 +210,7 @@ export default {
 
     // 跳转至某个二手宝贝帖子
     toGoodsPost(goodsID) {
-      alert(`前往二手宝贝ID：${goodsID}`)
+      this.$router.push(`/showPost?postType=transaction&id=${goodsID}`)
     },
 
     toPage(pageNum) {

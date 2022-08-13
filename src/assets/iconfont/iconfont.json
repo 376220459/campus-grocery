@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7693874",
+      "name": "兰花豆",
+      "font_class": "lanhuadou",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "11607653",
+      "name": "烟花",
+      "font_class": "yanhua",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
       "icon_id": "11372651",
       "name": "点赞",
       "font_class": "dianzan",

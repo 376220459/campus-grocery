@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-07 22:12:15
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 20:04:50
+ * @LastEditTime: 2022-08-13 20:25:20
  * @FilePath: \campus-grocery\src\views\HomePage.vue
  * @Description: 校园杂货铺首页
 -->
@@ -26,12 +26,6 @@ export default {
   name: 'HomePage',
 
   components: { AdvertBar, CampusBar, LostBar, TransactionBar },
-
-  data() {
-    return {}
-  },
-
-  methods: {},
 }
 </script>
 

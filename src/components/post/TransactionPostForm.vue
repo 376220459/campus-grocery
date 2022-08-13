@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 20:21:30
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 03:54:26
+ * @LastEditTime: 2022-08-13 20:11:27
  * @FilePath: \campus-grocery\src\components\post\TransactionPostForm.vue
  * @Description: 发布二手交易贴子表单组件
 -->
@@ -104,6 +104,8 @@
       <el-input
         v-model="transactionPostForm.data.liaisonName"
         placeholder="请填写联系人姓名"
+        maxlength="8"
+        show-word-limit
       ></el-input>
     </el-form-item>
 
@@ -114,6 +116,8 @@
       <el-input
         v-model="transactionPostForm.data.liaisonTel"
         placeholder="请填写联系人手机号"
+        maxlength="11"
+        show-word-limit
       ></el-input>
     </el-form-item>
 
@@ -173,15 +177,16 @@ import {
   productCategoryRule,
   conditionRule,
   priceRule,
-  transactionPlaceRule,
+  placeRule,
   nameRule,
   telNumberRule,
   contentRule,
 } from '@/utils/rules'
 import BaseImgUpload from '@/components/base/BaseImgUpload.vue'
-import { mapState } from 'vuex'
-import { postTransaction } from '@/apis/transactionPost'
+import { mapState, mapMutations } from 'vuex'
+import { postPost } from '@/apis/postPost'
 import resHandle from '@/utils/resHandle'
+import postSuccessHandle from '@/utils/postSuccessHandle'
 
 export default {
   name: 'TransactionPostForm',
@@ -213,7 +218,7 @@ export default {
           content: contentRule,
           condition: conditionRule,
           price: priceRule,
-          transactionPlace: transactionPlaceRule,
+          transactionPlace: placeRule,
           liaisonName: nameRule,
           liaisonTel: telNumberRule,
         },
@@ -229,6 +234,8 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['updateLoading']),
+
     // 更改价格面议按钮时触发
     changePirceSelect(isNegotiable) {
       if (isNegotiable) {
@@ -273,10 +280,30 @@ export default {
         }
 
         if (this.transactionPostForm.data.mainImg) {
+          this.updateLoading({
+            loading: true,
+            loadingText: '正在发布，请稍等...',
+          })
+
           this.fillFormData()
-          const res = await postTransaction(this.transactionPostForm.data)
-          resHandle(res)
-          alert('上传成功的后续...')
+          const res = await postPost(this.transactionPostForm.data)
+          resHandle(res, {
+            successHandle: () => {
+              postSuccessHandle({
+                confirmHadnle: () => {
+                  alert('发布成功回调')
+                },
+                cancelHadnle: () => {
+                  window.location.reload()
+                },
+              })
+            },
+            finallyHandle: () => {
+              this.updateLoading({
+                loading: false,
+              })
+            },
+          })
         } else {
           this.$message.warning('必须上传主图')
         }

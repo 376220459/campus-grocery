@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-12 01:24:33
+ * @LastEditTime: 2022-08-13 20:37:24
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
@@ -17,6 +17,7 @@ import { Message } from 'element-ui'
 import ErrorPage from '../views/ErrorPage.vue'
 import HomePage from '../views/HomePage.vue'
 import PostPage from '../views/PostPage.vue'
+import ShowPostPage from '../views/ShowPostPage.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/post',
     name: 'post',
     component: PostPage,
+  },
+  {
+    path: '/showPost',
+    name: 'showPost',
+    component: ShowPostPage,
   },
 ]
 

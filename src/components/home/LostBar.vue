@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-11 15:37:11
+ * @LastEditTime: 2022-08-13 21:44:31
  * @FilePath: \campus-grocery\src\components\home\LostBar.vue
  * @Description: 失物招领栏组件
 -->
@@ -83,7 +83,7 @@ export default {
   methods: {
     // 跳转至某个失物招领帖子
     toLost(lostID) {
-      alert(`前往失物招领ID：${lostID}`)
+      this.$router.push(`/showPost?postType=lost&id=${lostID}`)
     },
 
     // 跳转至失物招领页面
