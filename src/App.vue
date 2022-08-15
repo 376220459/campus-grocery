@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-12 16:00:21
+ * @LastEditTime: 2022-08-15 17:36:29
  * @FilePath: \campus-grocery\src\App.vue
  * @Description: App.vue文件
 -->
@@ -43,7 +43,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  user-select: none;
+  // user-select: none;
 }
 
 // ---------------------------------分割线--------------------------------------------

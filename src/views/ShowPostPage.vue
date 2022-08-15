@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 19:41:00
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 21:42:33
+ * @LastEditTime: 2022-08-15 18:15:35
  * @FilePath: \campus-grocery\src\views\ShowPostPage.vue
  * @Description: 查看帖子界面
 -->
@@ -19,13 +19,19 @@
       </div>
     </div>
 
-    <div v-else>{{ postType }}---{{ id }}</div>
+    <template v-else>
+      <TransactionShowPost v-if="postType === 'transaction'" />
+    </template>
   </el-main>
 </template>
 
 <script>
+import TransactionShowPost from '@/components/show-post/TransactionShowPost.vue'
+
 export default {
   name: 'ShowPostPage',
+
+  components: { TransactionShowPost },
 
   data() {
     return {
@@ -52,9 +58,11 @@ export default {
 
 <style scoped lang="scss">
 .el-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .not-found {
-    width: 100%;
-    height: 100%;
+    margin-top: 300px;
     display: flex;
     justify-content: center;
     align-items: center;

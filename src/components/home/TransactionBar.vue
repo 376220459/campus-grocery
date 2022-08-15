@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 20:50:59
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 21:45:15
+ * @LastEditTime: 2022-08-15 21:53:34
  * @FilePath: \campus-grocery\src\components\home\TransactionBar.vue
  * @Description: 二手交易组件
 -->
@@ -64,7 +64,6 @@
       :total="currentTypeGoodsNum"
       layout="prev, pager, next"
       :pager-count="11"
-      ref="test"
       :current-page.sync="currentPage"
       @current-change="toPage"
     >

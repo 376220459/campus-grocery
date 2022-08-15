@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-07 22:12:15
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 20:25:20
+ * @LastEditTime: 2022-08-15 18:12:40
  * @FilePath: \campus-grocery\src\views\HomePage.vue
  * @Description: 校园杂货铺首页
 -->
@@ -34,9 +34,5 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .main-container {
-    position: relative;
-  }
 }
 </style>

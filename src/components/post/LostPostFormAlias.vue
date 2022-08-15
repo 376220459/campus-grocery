@@ -220,7 +220,7 @@ export default {
     fillFormData() {
       const data = this.lostPostForm.data
       const now = Date.now()
-      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd HH:MM:ss')]
+      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd')]
     },
   },
 }

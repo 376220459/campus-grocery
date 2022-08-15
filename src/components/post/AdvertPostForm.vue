@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 20:21:30
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 20:09:10
+ * @LastEditTime: 2022-08-15 20:16:46
  * @FilePath: \campus-grocery\src\components\post\AdvertPostForm.vue
  * @Description: 发布广告贴子表单组件
 -->
@@ -207,7 +207,7 @@ export default {
     fillFormData() {
       const data = this.advertPostForm.data
       const now = Date.now()
-      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd HH:MM:ss')]
+      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd')]
     },
   },
 }

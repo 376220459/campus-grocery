@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 20:19:47
+ * @LastEditTime: 2022-08-15 16:30:06
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -67,12 +67,10 @@
           <div class="info-header">
             <p class="nickname">{{ userInfo.nickname }}</p>
             <div class="vip">
-              <svg
-                class="icon vip-icon"
-                aria-hidden="true"
-              >
-                <use :xlink:href="vipList[userInfo.vip - 1]"></use>
-              </svg>
+              <img
+                :src="vipList[`vip${userInfo.vip}`]"
+                class="vip-icon"
+              />
             </div>
           </div>
 
@@ -231,6 +229,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import vip1 from '@/assets/images/vip1.png'
+import vip2 from '@/assets/images/vip2.png'
+import vip3 from '@/assets/images/vip3.png'
+import vip4 from '@/assets/images/vip4.png'
+import vip5 from '@/assets/images/vip5.png'
+import vip6 from '@/assets/images/vip6.png'
 
 export default {
   name: 'HeaderNav',
@@ -239,14 +243,14 @@ export default {
     return {
       searchInput: '',
       selectValue: 'transaction_posts',
-      vipList: [
-        '#icon-chuangxiangqingtongvip',
-        '#icon-chuangxiangbaiyinvip',
-        '#icon-chuangxianghuangjinvip',
-        '#icon-chuangxiangzijinvip',
-        '#icon-chuangxiangzuanshivip',
-        '#icon-chuangxiangzhizunvip',
-      ],
+      vipList: {
+        vip1,
+        vip2,
+        vip3,
+        vip4,
+        vip5,
+        vip6,
+      },
     }
   },
 
@@ -360,7 +364,7 @@ export default {
       align-items: center;
 
       .vip-icon {
-        height: 25px;
+        height: 20px;
       }
     }
   }

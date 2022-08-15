@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 16:32:03
+ * @LastEditTime: 2022-08-15 18:49:02
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -42,6 +42,8 @@ import {
   Upload,
   Dialog,
   MessageBox,
+  Backtop,
+  Drawer,
 } from 'element-ui'
 
 Vue.use(Container)
@@ -67,6 +69,8 @@ Vue.use(Radio)
 Vue.use(Switch)
 Vue.use(Upload)
 Vue.use(Dialog)
+Vue.use(Backtop)
+Vue.use(Drawer)
 Vue.use(Loading.directive)
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
