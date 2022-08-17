@@ -2,12 +2,12 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-15 14:37:07
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-17 18:22:24
- * @FilePath: \campus-grocery\src\components\show-post\TransactionShowPost.vue
- * @Description: 展示二手交易帖子组件
+ * @LastEditTime: 2022-08-17 19:16:22
+ * @FilePath: \campus-grocery\src\components\show-post\CampusShowPost.vue
+ * @Description: 展示校园趣闻轶事帖子组件
 -->
 <template>
-  <div class="transaction-show-post">
+  <div class="campus-show-post">
     <header>
       <p class="post-title">{{ title }}</p>
 
@@ -45,45 +45,6 @@
         {{ content }}
       </div>
 
-      <p class="attribute-container">
-        <i class="el-icon-tickets" />
-        <span class="text">商品类别：</span>
-        <span class="content">{{ productCategory }}</span>
-      </p>
-
-      <p class="attribute-container">
-        <i class="el-icon-time" />
-        <span class="text">成色：</span>
-        <span class="content">{{ condition }}</span>
-      </p>
-
-      <div class="attribute-container">
-        <i class="el-icon-location-outline" />
-        <span class="text"> 交易地点： </span>
-        <span class="content"> {{ transactionPlace }} </span>
-        <p class="place-tips">
-          【注意：为防止上当受骗，本站仅允许<strong>校内交易</strong>，如发现交易地址不在校内，请立即举报，谢谢！】
-        </p>
-      </div>
-
-      <p class="attribute-container">
-        <i class="el-icon-price-tag" />
-        <span class="text">价格：</span>
-        <span class="content">{{ price }}</span>
-      </p>
-
-      <p class="attribute-container">
-        <i class="el-icon-user" />
-        <span class="text">联系人：</span>
-        <span class="content">{{ liaisonName }}</span>
-      </p>
-
-      <p class="attribute-container">
-        <i class="el-icon-phone-outline" />
-        <span class="text">手机号：</span>
-        <span class="content">{{ liaisonTel }}</span>
-      </p>
-
       <el-divider>
         <i class="el-icon-caret-top" />
       </el-divider>
@@ -119,17 +80,6 @@
         </div>
 
         <div
-          :class="{
-            'attribute-container': true,
-            'is-bought': isBought,
-          }"
-          @click="buy"
-        >
-          <i class="iconfont icon-dianyingpiao" />
-          <p>{{ buyNum >= 999 ? '999+' : buyNum }} 人想要</p>
-        </div>
-
-        <div
           class="attribute-container"
           @click="notOpen"
         >
@@ -157,7 +107,7 @@ import vip6 from '@/assets/images/vip6.png'
 import CommentDrawer from './components/CommentDrawer.vue'
 
 export default {
-  name: 'TransactionShowPost',
+  name: 'CampusShowPost',
 
   props: {
     id: {
@@ -199,22 +149,14 @@ export default {
         Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
         Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
         Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！`,
-      productCategory: '电子产品',
-      condition: '七成新',
-      price: '6999',
-      transactionPlace: '西安邮电大学东区一楼饭堂北门处',
-      liaisonName: '张三',
-      liaisonTel: 18300000000,
       imgs: [
         'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
         'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
         'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
       ],
       isSupport: false,
-      isBought: false,
       supportNum: 9913,
       commentNum: 1112,
-      buyNum: 299,
       commentList: [
         {
           id: 0,
@@ -287,16 +229,6 @@ export default {
       }
       this.isSupport = !this.isSupport
     },
-
-    // 我想要
-    buy() {
-      if (this.isBought) {
-        alert('已取消想要')
-      } else {
-        alert('想要成功')
-      }
-      this.isBought = !this.isBought
-    },
   },
 }
 </script>
@@ -308,7 +240,7 @@ export default {
   align-items: center;
 }
 
-.transaction-show-post {
+.campus-show-post {
   width: 1100px;
   min-width: 1100px;
   background: white;
@@ -408,11 +340,6 @@ export default {
         font-size: 18px;
         font-weight: bold;
       }
-
-      .place-tips {
-        color: red;
-        margin-top: 10px;
-      }
     }
 
     .imgs {
@@ -470,10 +397,6 @@ export default {
       }
 
       .is-support {
-        color: #409eff;
-      }
-
-      .is-bought {
         color: #409eff;
       }
     }

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 21:44:31
+ * @LastEditTime: 2022-08-17 23:03:26
  * @FilePath: \campus-grocery\src\components\home\LostBar.vue
  * @Description: 失物招领栏组件
 -->
@@ -33,7 +33,7 @@
       >
         <el-tooltip
           effect="light"
-          :content="lost.title"
+          :content="String(lost.title)"
           placement="top-start"
         >
           <p
@@ -45,7 +45,7 @@
           </p>
         </el-tooltip>
         <img
-          :src="lost.img"
+          :src="lost.mainImg"
           alt="advert"
           @click="toLost(lost.id)"
         />
@@ -55,28 +55,15 @@
 </template>
 
 <script>
+import { getPostList } from '@/apis/getPost'
+import resHandle from '@/utils/resHandle'
+
 export default {
   name: 'LostBar',
 
   data() {
     return {
-      lostList: [
-        {
-          id: '0',
-          title: '谁的钥匙丢在饭堂门口了，速来领取',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/lost/lost1.jpg',
-        },
-        {
-          id: '1',
-          title: '王尼玛，你的四级准考证落在西区图书馆啦',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/lost/lost2.jpg',
-        },
-        {
-          id: '2',
-          title: '东区教学楼捡到银行卡一张，携带证件来领取',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/lost/lost3.jpg',
-        },
-      ],
+      lostList: [],
     }
   },
 
@@ -90,6 +77,44 @@ export default {
     toLostPosts() {
       alert(`前往失物招领页面`)
     },
+
+    // 获取失物招领帖子列表
+    async getLostList(extraSuccessHandle = null) {
+      const res = await getPostList({
+        postType: 'lost',
+        pageNum: 1,
+        pageSize: 5,
+        condition: { finished: 0 },
+      })
+
+      resHandle(res, {
+        successHandle: () => {
+          const {
+            data: { postList },
+          } = res
+
+          this.lostList = postList.map(post => {
+            const { id, mainImg, title } = post
+
+            return {
+              id,
+              mainImg,
+              title,
+            }
+          })
+
+          extraSuccessHandle && extraSuccessHandle()
+        },
+
+        finallyHandle: () => {
+          this.productLoading = false
+        },
+      })
+    },
+  },
+
+  async created() {
+    await this.getLostList()
   },
 }
 </script>

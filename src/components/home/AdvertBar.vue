@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-09 22:12:06
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 21:40:12
+ * @LastEditTime: 2022-08-17 23:41:12
  * @FilePath: \campus-grocery\src\components\home\AdvertBar.vue
  * @Description: 广告栏组件
 -->
@@ -19,7 +19,7 @@
         :key="advert.id"
       >
         <img
-          :src="advert.img"
+          :src="advert.mainImg"
           alt="advert"
           @click="toAdvertPost(advert.id)"
         />
@@ -29,33 +29,15 @@
 </template>
 
 <script>
+import { getPostList } from '@/apis/getPost'
+import resHandle from '@/utils/resHandle'
+
 export default {
   name: 'AdvertBar',
 
   data() {
     return {
-      advertList: [
-        {
-          id: '0',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/advert/advert1.jpg',
-        },
-        {
-          id: '1',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/advert/advert2.jpg',
-        },
-        {
-          id: '2',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/advert/advert3.jpg',
-        },
-        {
-          id: '3',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/advert/advert4.jpg',
-        },
-        {
-          id: '4',
-          img: 'http://rgcrk77pq.hb-bkt.clouddn.com/advert/advert5.jpg',
-        },
-      ],
+      advertList: [],
     }
   },
 
@@ -64,6 +46,43 @@ export default {
     toAdvertPost(advertID) {
       this.$router.push(`/showPost?postType=advert&id=${advertID}`)
     },
+
+    // 获取失物招领帖子列表
+    async getAdvertList(extraSuccessHandle = null) {
+      const res = await getPostList({
+        postType: 'advert',
+        pageNum: 1,
+        pageSize: 5,
+        condition: { finished: 0 },
+      })
+
+      resHandle(res, {
+        successHandle: () => {
+          const {
+            data: { postList },
+          } = res
+
+          this.advertList = postList.map(post => {
+            const { id, mainImg } = post
+
+            return {
+              id,
+              mainImg,
+            }
+          })
+
+          extraSuccessHandle && extraSuccessHandle()
+        },
+
+        finallyHandle: () => {
+          this.productLoading = false
+        },
+      })
+    },
+  },
+
+  async created() {
+    await this.getAdvertList()
   },
 }
 </script>

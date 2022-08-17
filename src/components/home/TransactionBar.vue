@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 20:50:59
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-15 21:53:34
+ * @LastEditTime: 2022-08-17 23:02:09
  * @FilePath: \campus-grocery\src\components\home\TransactionBar.vue
  * @Description: 二手交易组件
 -->
@@ -12,7 +12,7 @@
       <p class="type-text">分类:</p>
 
       <p
-        v-for="(type, index) in typeList"
+        v-for="(type, index) in productCategoryList"
         :key="index"
         :class="{ 'select-type': isSelect(type) }"
         @click="selectType(type)"
@@ -24,46 +24,43 @@
     <el-divider></el-divider>
 
     <div
-      class="goods-container"
-      v-loading="goodsLoading"
+      class="product-container"
+      v-loading="productLoading"
       element-loading-text="加载中..."
     >
       <div
-        class="goods"
-        v-for="goods in goodsList"
-        :key="goods.id"
-        @click="toGoodsPost(goods.id)"
+        class="product"
+        v-for="product in productList"
+        :key="product.id"
+        @click="toProductPost(product.id)"
       >
-        <img
-          :src="goods.img"
-          :alt="goods.id"
-        />
+        <img :src="product.mainImg" />
 
-        <div class="goods-content">
-          <p class="goods-title">
-            <span class="goods-title-text">标</span>
+        <div class="product-content">
+          <p class="product-title">
+            <span class="product-title-text">标</span>
             <el-tooltip
-              :content="goods.title"
+              :content="String(product.title)"
               placement="top-start"
               effect="light"
             >
-              <span>{{ goods.title }}</span>
+              <span>{{ product.title }}</span>
             </el-tooltip>
           </p>
-          <p class="goods-browse-count">{{ goods.browseCount }}人看过</p>
-          <p class="goods-price">
-            <span class="goods-price-text">￥</span>
-            {{ goods.price }}
+          <p class="product-browse-count">{{ product.browseCount }}人看过</p>
+          <p class="product-price">
+            <span class="product-price-text">￥</span>
+            {{ product.price }}
           </p>
         </div>
       </div>
     </div>
 
     <el-pagination
-      :page-size="15"
-      :total="currentTypeGoodsNum"
+      :page-size="pageSize"
+      :total="currentTypeProductNum"
       layout="prev, pager, next"
-      :pager-count="11"
+      :pager-count="pagerCount"
       :current-page.sync="currentPage"
       @current-change="toPage"
     >
@@ -72,153 +69,98 @@
 </template>
 
 <script>
+import { getPostList } from '@/apis/getPost'
+import resHandle from '@/utils/resHandle'
+
 export default {
   name: 'TransactionBar',
 
   data() {
     return {
-      selectedType: '全部',
-      typeList: ['全部', '书籍资料', '日常用品', '电子设备', '体育用品', '其它'],
-      goodsLoading: false,
+      selectedProductCategory: '全部',
+      productCategoryList: ['全部', '书籍资料', '日常用品', '电子设备', '体育用品', '其它'],
+      productLoading: false,
+      pagerCount: 9,
       currentPage: 1,
-      currentTypeGoodsNum: 999,
-      goodsList: [
-        {
-          id: '0',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '1',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '2',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '3',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '4',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '5',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '6',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '7',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '8',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '9',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '10',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '11',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '12',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '13',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-        {
-          id: '14',
-          img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F14063517486%2F1000.jpg&refer=http%3A%2F%2Finews.gtimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662795767&t=9d0d99665abb17ed8026f38a6feb115e',
-          title: 'iphone13 pro max（256G 远峰蓝）用了一年，低价出了，急！！！',
-          browseCount: '98',
-          price: '3999',
-        },
-      ],
+      pageSize: 15,
+      currentTypeProductNum: 999,
+      productList: [],
     }
   },
 
   methods: {
-    selectType(type) {
-      this.selectedType = type
-      this.goodsLoading = true
-      setTimeout(() => {
-        this.goodsLoading = false
+    // 切换商品类型
+    async selectType(type) {
+      this.selectedProductCategory = type
+      await this.getTransactionList(() => {
         this.currentPage = 1
-        alert(`切换到了${type}`)
-      }, 1000)
+      })
     },
 
+    // 判断当前商品类型
     isSelect(type) {
-      return type === this.selectedType
+      return type === this.selectedProductCategory
     },
 
     // 跳转至某个二手宝贝帖子
-    toGoodsPost(goodsID) {
-      this.$router.push(`/showPost?postType=transaction&id=${goodsID}`)
+    toProductPost(productID) {
+      this.$router.push(`/showPost?postType=transaction&id=${productID}`)
     },
 
-    toPage(pageNum) {
-      this.goodsLoading = true
-      setTimeout(() => {
-        this.goodsLoading = false
-        alert(`切换到${this.selectedType}的第${pageNum}页`)
-      }, 1000)
+    // 跳转页
+    async toPage() {
+      await this.getTransactionList()
     },
+
+    // 获取二手交易帖子列表
+    async getTransactionList(extraSuccessHandle = null) {
+      this.productLoading = true
+
+      const { selectedProductCategory, currentPage, pageSize } = this
+      let condition = {}
+      if (selectedProductCategory === '全部') {
+        condition = { finished: 0 }
+      } else {
+        condition = { productCategory: selectedProductCategory, finished: 0 }
+      }
+      const res = await getPostList({
+        postType: 'transaction',
+        pageNum: currentPage,
+        pageSize,
+        condition,
+      })
+
+      resHandle(res, {
+        successHandle: () => {
+          const {
+            data: { count, postList },
+          } = res
+
+          this.currentTypeProductNum = count
+          this.productList = postList.map(post => {
+            const { id, mainImg, title, browseCount, price } = post
+
+            return {
+              id,
+              mainImg,
+              title,
+              browseCount,
+              price,
+            }
+          })
+
+          extraSuccessHandle && extraSuccessHandle()
+        },
+
+        finallyHandle: () => {
+          this.productLoading = false
+        },
+      })
+    },
+  },
+
+  async created() {
+    await this.getTransactionList()
   },
 }
 </script>
@@ -266,12 +208,12 @@ export default {
     }
   }
 
-  .goods-container {
+  .product-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 
-    .goods {
+    .product {
       width: 360px;
       height: 170px;
       background: #f7f9fa;
@@ -296,14 +238,14 @@ export default {
         margin-right: 10px;
       }
 
-      .goods-content {
+      .product-content {
         height: 140px;
         width: 170px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
 
-        .goods-title {
+        .product-title {
           height: 2.6em;
           line-height: 1.3em;
           width: 175px;
@@ -311,7 +253,7 @@ export default {
           overflow: hidden;
           word-break: break-all;
 
-          .goods-title-text {
+          .product-title-text {
             color: white;
             background-color: orange;
             padding: 2px;
@@ -324,17 +266,17 @@ export default {
           }
         }
 
-        .goods-browse-count {
+        .product-browse-count {
           font-size: 15px;
           color: #909399;
           margin: 15px 0 30px 5px;
         }
 
-        .goods-price {
+        .product-price {
           font-size: 24px;
           color: #ff5000;
 
-          .goods-price-text {
+          .product-price-text {
             font-size: 15px;
             font-weight: normal;
           }

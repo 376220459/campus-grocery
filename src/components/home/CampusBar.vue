@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 21:44:06
+ * @LastEditTime: 2022-08-17 23:27:49
  * @FilePath: \campus-grocery\src\components\home\CampusBar.vue
  * @Description: 校园趣闻轶事栏组件
 -->
@@ -37,33 +37,15 @@
 </template>
 
 <script>
+import { getPostList } from '@/apis/getPost'
+import resHandle from '@/utils/resHandle'
+
 export default {
   name: 'CampusBar',
 
   data() {
     return {
-      campusList: [
-        {
-          id: '0',
-          title: '邀请函：西安邮电大学计算机学院20周年庆',
-        },
-        {
-          id: '1',
-          title: '9月10日教师节联欢晚会于西区大学生活动中心举行',
-        },
-        {
-          id: '2',
-          title: '今天在东区北门发现了一只超好看的小猫咪',
-        },
-        {
-          id: '3',
-          title: '10月份孤儿院、敬老院“温暖行动”开始报名啦~',
-        },
-        {
-          id: '4',
-          title: '校园十大歌手大赛报名正式开始啦！',
-        },
-      ],
+      campusList: [],
     }
   },
 
@@ -85,6 +67,42 @@ export default {
     toCampusPosts() {
       alert(`前往校园趣闻轶事页面`)
     },
+
+    // 获取校园趣闻轶事帖子列表
+    async getCampusList(extraSuccessHandle = null) {
+      const res = await getPostList({
+        postType: 'campus',
+        pageNum: 1,
+        pageSize: 5,
+      })
+
+      resHandle(res, {
+        successHandle: () => {
+          const {
+            data: { postList },
+          } = res
+
+          this.campusList = postList.map(post => {
+            const { id, title } = post
+
+            return {
+              id,
+              title,
+            }
+          })
+
+          extraSuccessHandle && extraSuccessHandle()
+        },
+
+        finallyHandle: () => {
+          this.productLoading = false
+        },
+      })
+    },
+  },
+
+  async created() {
+    await this.getCampusList()
   },
 }
 </script>

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 19:41:00
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-15 18:15:35
+ * @LastEditTime: 2022-08-17 19:17:03
  * @FilePath: \campus-grocery\src\views\ShowPostPage.vue
  * @Description: 查看帖子界面
 -->
@@ -20,18 +20,39 @@
     </div>
 
     <template v-else>
-      <TransactionShowPost v-if="postType === 'transaction'" />
+      <TransactionShowPost
+        v-if="postType === 'transaction'"
+        :id="id"
+      />
+
+      <AdvertShowPost
+        v-else-if="postType === 'advert'"
+        :id="id"
+      />
+
+      <LostShowPost
+        v-else-if="postType === 'lost'"
+        :id="id"
+      />
+
+      <CampusShowPost
+        v-else-if="postType === 'campus'"
+        :id="id"
+      />
     </template>
   </el-main>
 </template>
 
 <script>
 import TransactionShowPost from '@/components/show-post/TransactionShowPost.vue'
+import AdvertShowPost from '@/components/show-post/AdvertShowPost.vue'
+import LostShowPost from '@/components/show-post/LostShowPost.vue'
+import CampusShowPost from '@/components/show-post/CampusShowPost.vue'
 
 export default {
   name: 'ShowPostPage',
 
-  components: { TransactionShowPost },
+  components: { TransactionShowPost, AdvertShowPost, LostShowPost, CampusShowPost },
 
   data() {
     return {
@@ -45,8 +66,8 @@ export default {
 
   created() {
     const { postType = '', id = '' } = this.$route.query
-    const postTypeList = ['transaction', 'campus', 'lost', 'advert']
-    if (postType.length === 0 || id.length === 0 || !postTypeList.includes(postType)) {
+    const postproductCategoryList = ['transaction', 'campus', 'lost', 'advert']
+    if (postType.length === 0 || id.length === 0 || !postproductCategoryList.includes(postType)) {
       this.notFound = true
     } else {
       ;[this.postType, this.id] = [postType, id]
