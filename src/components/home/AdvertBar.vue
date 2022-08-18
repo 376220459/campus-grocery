@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-09 22:12:06
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-17 23:41:12
+ * @LastEditTime: 2022-08-18 12:11:02
  * @FilePath: \campus-grocery\src\components\home\AdvertBar.vue
  * @Description: 广告栏组件
 -->

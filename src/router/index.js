@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 20:37:24
+ * @LastEditTime: 2022-08-18 11:29:37
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
@@ -86,6 +86,8 @@ router.beforeEach(async (to, from, next) => {
     const res = await checkAuthToken()
     resHandle(res, {
       successHandle: () => {
+        // 将用户信息存入store
+        store.commit('setUserInfo', res.data.userInfo)
         next()
       },
       warningHandle: () => {

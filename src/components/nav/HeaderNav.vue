@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-15 16:30:06
+ * @LastEditTime: 2022-08-18 11:24:00
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -59,7 +59,6 @@
         <img
           class="user-head"
           :src="userInfo.head"
-          alt="head"
           slot="reference"
         />
 

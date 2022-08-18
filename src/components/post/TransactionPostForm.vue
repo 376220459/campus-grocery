@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 20:21:30
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 20:11:27
+ * @LastEditTime: 2022-08-18 21:12:39
  * @FilePath: \campus-grocery\src\components\post\TransactionPostForm.vue
  * @Description: 发布二手交易贴子表单组件
 -->
@@ -186,6 +186,7 @@ import BaseImgUpload from '@/components/base/BaseImgUpload.vue'
 import { mapState, mapMutations } from 'vuex'
 import { postPost } from '@/apis/postPost'
 import resHandle from '@/utils/resHandle'
+import getCurrentTime from '@/utils/getCurrentTime'
 import postSuccessHandle from '@/utils/postSuccessHandle'
 
 export default {
@@ -291,7 +292,8 @@ export default {
             successHandle: () => {
               postSuccessHandle({
                 confirmHadnle: () => {
-                  alert('发布成功回调')
+                  const transactionID = res.data.postData.id
+                  this.$router.push(`/showPost?postType=transaction&id=${transactionID}`)
                 },
                 cancelHadnle: () => {
                   window.location.reload()
@@ -313,8 +315,7 @@ export default {
     // 补全不需要用户手动输入的表单数据
     fillFormData() {
       const data = this.transactionPostForm.data
-      const now = Date.now()
-      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd')]
+      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, getCurrentTime()]
     },
   },
 }

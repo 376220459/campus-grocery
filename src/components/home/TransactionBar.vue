@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 20:50:59
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-17 23:02:09
+ * @LastEditTime: 2022-08-18 22:03:50
  * @FilePath: \campus-grocery\src\components\home\TransactionBar.vue
  * @Description: 二手交易组件
 -->
@@ -211,7 +211,7 @@ export default {
   .product-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    padding: 0 30px;
 
     .product {
       width: 360px;

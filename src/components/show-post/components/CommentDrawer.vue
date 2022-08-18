@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-17 17:15:12
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-17 18:23:35
+ * @LastEditTime: 2022-08-18 21:33:33
  * @FilePath: \campus-grocery\src\components\show-post\components\CommentDrawer.vue
  * @Description: 帖子评论抽屉组件
 -->
@@ -141,6 +141,11 @@ export default {
 
     id: {
       type: Number,
+      required: true,
+    },
+
+    postType: {
+      type: String,
       required: true,
     },
   },

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-13 18:28:55
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 19:28:46
+ * @LastEditTime: 2022-08-18 21:12:30
  * @FilePath: \campus-grocery\src\components\post\CampusPostForm.vue
  * @Description: 发布校园二手交易帖子表单组件
 -->
@@ -67,6 +67,7 @@ import { mapState, mapMutations } from 'vuex'
 import { postPost } from '@/apis/postPost'
 import resHandle from '@/utils/resHandle'
 import postSuccessHandle from '@/utils/postSuccessHandle'
+import getCurrentTime from '@/utils/getCurrentTime'
 
 export default {
   name: 'CampusPostForm',
@@ -127,7 +128,8 @@ export default {
           successHandle: () => {
             postSuccessHandle({
               confirmHadnle: () => {
-                alert('发布成功回调')
+                const campusID = res.data.postData.id
+                this.$router.push(`/showPost?postType=campus&id=${campusID}`)
               },
               cancelHadnle: () => {
                 window.location.reload()
@@ -146,8 +148,7 @@ export default {
     // 补全不需要用户手动输入的表单数据
     fillFormData() {
       const data = this.campusPostForm.data
-      const now = Date.now()
-      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd')]
+      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, getCurrentTime()]
     },
   },
 }

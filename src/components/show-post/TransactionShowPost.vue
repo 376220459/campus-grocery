@@ -2,29 +2,29 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-15 14:37:07
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-17 18:22:24
+ * @LastEditTime: 2022-08-18 22:09:41
  * @FilePath: \campus-grocery\src\components\show-post\TransactionShowPost.vue
  * @Description: 展示二手交易帖子组件
 -->
 <template>
-  <div class="transaction-show-post">
+  <div :class="{ 'transaction-show-post': true, 'opacity-style': opacityControl }">
     <header>
       <p class="post-title">{{ title }}</p>
 
       <div class="user-info">
         <img
-          :src="user.head"
+          :src="userInfo.head"
           class="head"
         />
         <div class="info">
           <div class="nickname-container">
-            <p class="nickname">{{ user.nickname }}</p>
+            <p class="nickname">{{ userInfo.nickname }}</p>
             <img
-              :src="vipList[`vip${user.vip}`]"
+              :src="vipList[`vip${userInfo.vip}`]"
               class="vip"
             />
           </div>
-          <p class="signature">{{ user.signature.length ? user.signature : '这个人很懒，什么都没有留下' }}</p>
+          <p class="signature">{{ userInfo.signature ? userInfo.signature : '这个人很懒，什么都没有留下' }}</p>
         </div>
       </div>
 
@@ -41,9 +41,7 @@
     </el-divider>
 
     <main>
-      <div class="post-content">
-        {{ content }}
-      </div>
+      <div class="post-content">{{ content }}</div>
 
       <p class="attribute-container">
         <i class="el-icon-tickets" />
@@ -97,51 +95,17 @@
       </div>
     </main>
 
-    <aside>
-      <div class="aside-container">
-        <div
-          :class="{
-            'attribute-container': true,
-            'is-support': isSupport,
-          }"
-          @click="support"
-        >
-          <i class="iconfont icon-dianzan" />
-          <p>{{ supportNum >= 999 ? '999+' : supportNum }} 人赞过</p>
-        </div>
-
-        <div
-          class="attribute-container"
-          @click="openCommentDrawer"
-        >
-          <i class="iconfont icon-pinglun" />
-          <p>{{ commentNum >= 999 ? '999+' : commentNum }} 个评论</p>
-        </div>
-
-        <div
-          :class="{
-            'attribute-container': true,
-            'is-bought': isBought,
-          }"
-          @click="buy"
-        >
-          <i class="iconfont icon-dianyingpiao" />
-          <p>{{ buyNum >= 999 ? '999+' : buyNum }} 人想要</p>
-        </div>
-
-        <div
-          class="attribute-container"
-          @click="notOpen"
-        >
-          <i class="el-icon-warning-outline" />
-          <p>举报</p>
-        </div>
-      </div>
-    </aside>
+    <ShowPostAside
+      :id="id"
+      postType="transaction"
+      :buyButton="true"
+      @openCommentDrawer="openCommentDrawer"
+    />
 
     <CommentDrawer
       :commentDrawerSwitch="commentDrawerSwitch"
       :id="id"
+      postType="transaction"
       @closeCommentDrawer="closeCommentDrawer"
     />
   </div>
@@ -154,7 +118,11 @@ import vip3 from '@/assets/images/vip3.png'
 import vip4 from '@/assets/images/vip4.png'
 import vip5 from '@/assets/images/vip5.png'
 import vip6 from '@/assets/images/vip6.png'
+import { getPost } from '@/apis/getPost'
+import resHandle from '@/utils/resHandle'
+import { mapMutations } from 'vuex'
 import CommentDrawer from './components/CommentDrawer.vue'
+import ShowPostAside from './components/ShowPostAside.vue'
 
 export default {
   name: 'TransactionShowPost',
@@ -168,10 +136,13 @@ export default {
 
   components: {
     CommentDrawer,
+    ShowPostAside,
   },
 
   data() {
     return {
+      // 防止页面加载时闪烁
+      opacityControl: true,
       vipList: {
         vip1,
         vip2,
@@ -181,88 +152,29 @@ export default {
         vip6,
       },
       commentDrawerSwitch: false,
-      title: 'iphone13 Pro Max半价大甩卖啦！！！',
-      user: {
-        head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-        nickname: 'Hole',
-        vip: 6,
+      title: '',
+      userInfo: {
+        head: '',
+        nickname: '',
+        vip: -1,
         signature: '',
       },
-      browseCount: 998,
-      postTime: '2022-07-17',
-      content: `iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13
-        Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
-        Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
-        Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
-        Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
-        Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
-        Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
-        Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！iphone13 Pro
-        Max半价大甩卖啦！！！iphone13 Pro Max半价大甩卖啦！！！`,
-      productCategory: '电子产品',
-      condition: '七成新',
-      price: '6999',
-      transactionPlace: '西安邮电大学东区一楼饭堂北门处',
-      liaisonName: '张三',
-      liaisonTel: 18300000000,
-      imgs: [
-        'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-        'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-        'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-      ],
-      isSupport: false,
-      isBought: false,
-      supportNum: 9913,
-      commentNum: 1112,
-      buyNum: 299,
-      commentList: [
-        {
-          id: 0,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          commentTime: '2022-07-17',
-          content: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 1,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 2,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 3,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 4,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 5,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-      ],
+      browseCount: 0,
+      postTime: '',
+      content: '',
+      productCategory: '',
+      condition: '',
+      price: '',
+      transactionPlace: '',
+      liaisonName: '',
+      liaisonTel: '',
+      imgs: [],
     }
   },
 
   methods: {
+    ...mapMutations(['updateLoading']),
+
     // 打开评论抽屉
     openCommentDrawer() {
       this.commentDrawerSwitch = true
@@ -272,31 +184,66 @@ export default {
     closeCommentDrawer() {
       this.commentDrawerSwitch = false
     },
+  },
 
-    // 未开通功能提示
-    notOpen() {
-      this.$message.warning('此功能未开通')
-    },
+  async created() {
+    const res = await getPost({
+      postType: 'transaction',
+      id: this.id,
+    })
+    const { postData, userInfo } = res.data
 
-    // 点赞
-    support() {
-      if (this.isSupport) {
-        alert('已取消点赞')
-      } else {
-        alert('点赞成功')
-      }
-      this.isSupport = !this.isSupport
-    },
+    resHandle(res, {
+      successHandle: () => {
+        ;[
+          this.title,
+          this.postTime,
+          this.content,
+          this.productCategory,
+          this.condition,
+          this.price,
+          this.transactionPlace,
+          this.liaisonName,
+          this.liaisonTel,
+          this.browseCount,
+          this.imgs,
+          this.userInfo.head,
+          this.userInfo.nickname,
+          this.userInfo.vip,
+          this.userInfo.signature,
+        ] = [
+          postData.title,
+          postData.postTime,
+          postData.content,
+          postData.productCategory,
+          postData.condition,
+          postData.price,
+          postData.transactionPlace,
+          postData.liaisonName,
+          postData.liaisonTel,
+          postData.browseCount,
+          [postData.mainImg, ...postData.imgs],
+          userInfo.head,
+          userInfo.nickname,
+          userInfo.vip,
+          userInfo.signature,
+        ]
 
-    // 我想要
-    buy() {
-      if (this.isBought) {
-        alert('已取消想要')
-      } else {
-        alert('想要成功')
-      }
-      this.isBought = !this.isBought
-    },
+        this.opacityControl = false
+      },
+
+      warningHandle: () => {
+        if (res.code === 2) {
+          this.$emit('notFound')
+        }
+      },
+
+      finallyHandle: () => {
+        this.updateLoading({
+          loading: false,
+        })
+      },
+    })
   },
 }
 </script>
@@ -306,6 +253,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.opacity-style {
+  opacity: 0;
 }
 
 .transaction-show-post {
@@ -385,9 +336,9 @@ export default {
   main {
     .post-content {
       text-align: left;
-      text-indent: 2em;
       font-size: 18px;
       line-height: 1.8em;
+      white-space: pre-wrap;
       box-shadow: 0px 0px 3px #8f8f8f;
       border-radius: 10px;
       padding: 30px 20px;
@@ -438,45 +389,6 @@ export default {
     box-shadow: 0px 0px 15px #00000071;
     display: flex;
     justify-content: center;
-
-    .aside-container {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      .attribute-container {
-        @include flex-center;
-        margin-top: 20px;
-        cursor: pointer;
-        transition: all 0.3s;
-
-        &:nth-of-type(1) {
-          margin-top: 0;
-        }
-
-        &:hover {
-          transform: scale(1.1);
-          color: #409eff;
-        }
-
-        i {
-          font-size: 35px;
-          margin-right: 10px;
-        }
-
-        p {
-          font-size: 18px;
-        }
-      }
-
-      .is-support {
-        color: #409eff;
-      }
-
-      .is-bought {
-        color: #409eff;
-      }
-    }
   }
 }
 </style>

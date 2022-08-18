@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 20:21:30
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-15 20:16:46
+ * @LastEditTime: 2022-08-18 21:11:43
  * @FilePath: \campus-grocery\src\components\post\AdvertPostForm.vue
  * @Description: 发布广告贴子表单组件
 -->
@@ -105,6 +105,7 @@ import BaseImgUpload from '@/components/base/BaseImgUpload.vue'
 import { mapState, mapMutations } from 'vuex'
 import { postPost } from '@/apis/postPost'
 import resHandle from '@/utils/resHandle'
+import getCurrentTime from '@/utils/getCurrentTime'
 import postSuccessHandle from '@/utils/postSuccessHandle'
 
 export default {
@@ -184,7 +185,8 @@ export default {
             successHandle: () => {
               postSuccessHandle({
                 confirmHadnle: () => {
-                  alert('发布成功回调')
+                  const advertID = res.data.postData.id
+                  this.$router.push(`/showPost?postType=advert&id=${advertID}`)
                 },
                 cancelHadnle: () => {
                   window.location.reload()
@@ -206,8 +208,7 @@ export default {
     // 补全不需要用户手动输入的表单数据
     fillFormData() {
       const data = this.advertPostForm.data
-      const now = Date.now()
-      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, this.$dateFormat(now, 'yyyy-mm-dd')]
+      ;[data.telNumber, data.postTime] = [this.userInfo.telNumber, getCurrentTime()]
     },
   },
 }
