@@ -2,31 +2,22 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-15 14:37:07
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-18 22:09:41
+ * @LastEditTime: 2022-08-19 16:48:07
  * @FilePath: \campus-grocery\src\components\show-post\TransactionShowPost.vue
  * @Description: 展示二手交易帖子组件
 -->
 <template>
-  <div :class="{ 'transaction-show-post': true, 'opacity-style': opacityControl }">
+  <div
+    v-if="postTelNumber"
+    class="transaction-show-post"
+  >
     <header>
       <p class="post-title">{{ title }}</p>
 
-      <div class="user-info">
-        <img
-          :src="userInfo.head"
-          class="head"
-        />
-        <div class="info">
-          <div class="nickname-container">
-            <p class="nickname">{{ userInfo.nickname }}</p>
-            <img
-              :src="vipList[`vip${userInfo.vip}`]"
-              class="vip"
-            />
-          </div>
-          <p class="signature">{{ userInfo.signature ? userInfo.signature : '这个人很懒，什么都没有留下' }}</p>
-        </div>
-      </div>
+      <PostUserInfo
+        v-if="postTelNumber"
+        :telNumber="postTelNumber"
+      />
 
       <p class="browse-count">
         <i class="el-icon-view" />
@@ -96,8 +87,10 @@
     </main>
 
     <ShowPostAside
+      v-if="postTelNumber"
       :id="id"
-      postType="transaction"
+      :postType="postType"
+      :postTelNumber="postTelNumber"
       :buyButton="true"
       @openCommentDrawer="openCommentDrawer"
     />
@@ -105,24 +98,19 @@
     <CommentDrawer
       :commentDrawerSwitch="commentDrawerSwitch"
       :id="id"
-      postType="transaction"
+      :postType="postType"
       @closeCommentDrawer="closeCommentDrawer"
     />
   </div>
 </template>
 
 <script>
-import vip1 from '@/assets/images/vip1.png'
-import vip2 from '@/assets/images/vip2.png'
-import vip3 from '@/assets/images/vip3.png'
-import vip4 from '@/assets/images/vip4.png'
-import vip5 from '@/assets/images/vip5.png'
-import vip6 from '@/assets/images/vip6.png'
 import { getPost } from '@/apis/getPost'
 import resHandle from '@/utils/resHandle'
 import { mapMutations } from 'vuex'
 import CommentDrawer from './components/CommentDrawer.vue'
 import ShowPostAside from './components/ShowPostAside.vue'
+import PostUserInfo from './components/PostUserInfo.vue'
 
 export default {
   name: 'TransactionShowPost',
@@ -135,30 +123,17 @@ export default {
   },
 
   components: {
+    PostUserInfo,
     CommentDrawer,
     ShowPostAside,
   },
 
   data() {
     return {
-      // 防止页面加载时闪烁
-      opacityControl: true,
-      vipList: {
-        vip1,
-        vip2,
-        vip3,
-        vip4,
-        vip5,
-        vip6,
-      },
       commentDrawerSwitch: false,
+      postType: 'transaction',
+      postTelNumber: '',
       title: '',
-      userInfo: {
-        head: '',
-        nickname: '',
-        vip: -1,
-        signature: '',
-      },
       browseCount: 0,
       postTime: '',
       content: '',
@@ -188,14 +163,15 @@ export default {
 
   async created() {
     const res = await getPost({
-      postType: 'transaction',
+      postType: this.postType,
       id: this.id,
     })
-    const { postData, userInfo } = res.data
+    const { postData } = res.data
 
     resHandle(res, {
       successHandle: () => {
         ;[
+          this.postTelNumber,
           this.title,
           this.postTime,
           this.content,
@@ -207,11 +183,8 @@ export default {
           this.liaisonTel,
           this.browseCount,
           this.imgs,
-          this.userInfo.head,
-          this.userInfo.nickname,
-          this.userInfo.vip,
-          this.userInfo.signature,
         ] = [
+          postData.telNumber,
           postData.title,
           postData.postTime,
           postData.content,
@@ -223,13 +196,7 @@ export default {
           postData.liaisonTel,
           postData.browseCount,
           [postData.mainImg, ...postData.imgs],
-          userInfo.head,
-          userInfo.nickname,
-          userInfo.vip,
-          userInfo.signature,
         ]
-
-        this.opacityControl = false
       },
 
       warningHandle: () => {
@@ -255,10 +222,6 @@ export default {
   align-items: center;
 }
 
-.opacity-style {
-  opacity: 0;
-}
-
 .transaction-show-post {
   width: 1100px;
   min-width: 1100px;
@@ -274,48 +237,6 @@ export default {
     .post-title {
       font-size: 30px;
       font-weight: bold;
-    }
-
-    .user-info {
-      @include flex-center;
-      margin: 15px 0 25px 0;
-
-      .head {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 10px;
-        object-fit: cover;
-        cursor: pointer;
-      }
-
-      .info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: space-between;
-
-        .nickname-container {
-          display: flex;
-          align-items: center;
-
-          .nickname {
-            font-size: 24px;
-            margin-right: 5px;
-            cursor: pointer;
-          }
-
-          .vip {
-            height: 18px;
-            cursor: pointer;
-          }
-        }
-
-        .signature {
-          color: #606266;
-          font-size: 15px;
-        }
-      }
     }
 
     .browse-count {
@@ -376,19 +297,6 @@ export default {
         margin-bottom: 20px;
       }
     }
-  }
-
-  aside {
-    position: fixed;
-    top: 30%;
-    margin-left: 1100px;
-    width: 190px;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: 0px 0px 15px #00000071;
-    display: flex;
-    justify-content: center;
   }
 }
 </style>

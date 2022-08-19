@@ -2,12 +2,15 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-17 23:03:26
+ * @LastEditTime: 2022-08-19 17:08:01
  * @FilePath: \campus-grocery\src\components\home\LostBar.vue
  * @Description: 失物招领栏组件
 -->
 <template>
-  <div class="lost-bar">
+  <div
+    class="lost-bar"
+    v-loading="loading"
+  >
     <div
       class="more-text"
       @click="toLostPosts"
@@ -63,6 +66,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       lostList: [],
     }
   },
@@ -80,6 +84,8 @@ export default {
 
     // 获取失物招领帖子列表
     async getLostList(extraSuccessHandle = null) {
+      this.loading = true
+
       const res = await getPostList({
         postType: 'lost',
         pageNum: 1,
@@ -107,7 +113,7 @@ export default {
         },
 
         finallyHandle: () => {
-          this.productLoading = false
+          this.loading = false
         },
       })
     },

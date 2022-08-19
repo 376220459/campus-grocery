@@ -2,12 +2,15 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 15:01:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-17 23:27:49
+ * @LastEditTime: 2022-08-19 17:06:23
  * @FilePath: \campus-grocery\src\components\home\CampusBar.vue
  * @Description: 校园趣闻轶事栏组件
 -->
 <template>
-  <div class="campus-bar">
+  <div
+    class="campus-bar"
+    v-loading="loading"
+  >
     <div
       class="more-text"
       @click="toCampusPosts"
@@ -45,6 +48,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       campusList: [],
     }
   },
@@ -70,6 +74,7 @@ export default {
 
     // 获取校园趣闻轶事帖子列表
     async getCampusList(extraSuccessHandle = null) {
+      this.loading = true
       const res = await getPostList({
         postType: 'campus',
         pageNum: 1,
@@ -95,7 +100,7 @@ export default {
         },
 
         finallyHandle: () => {
-          this.productLoading = false
+          this.loading = false
         },
       })
     },

@@ -2,12 +2,15 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-09 22:12:06
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-18 12:11:02
+ * @LastEditTime: 2022-08-19 17:09:04
  * @FilePath: \campus-grocery\src\components\home\AdvertBar.vue
  * @Description: 广告栏组件
 -->
 <template>
-  <div class="advert-bar">
+  <div
+    class="advert-bar"
+    v-loading="loading"
+  >
     <el-carousel
       :interval="4000"
       type="card"
@@ -37,6 +40,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       advertList: [],
     }
   },
@@ -49,6 +53,8 @@ export default {
 
     // 获取失物招领帖子列表
     async getAdvertList(extraSuccessHandle = null) {
+      this.loading = true
+
       const res = await getPostList({
         postType: 'advert',
         pageNum: 1,
@@ -75,7 +81,7 @@ export default {
         },
 
         finallyHandle: () => {
-          this.productLoading = false
+          this.loading = false
         },
       })
     },

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-15 18:49:02
+ * @LastEditTime: 2022-08-19 23:33:01
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -44,6 +44,7 @@ import {
   MessageBox,
   Backtop,
   Drawer,
+  InfiniteScroll,
 } from 'element-ui'
 
 Vue.use(Container)
@@ -71,7 +72,7 @@ Vue.use(Upload)
 Vue.use(Dialog)
 Vue.use(Backtop)
 Vue.use(Drawer)
-Vue.use(Loading.directive)
+Vue.use(InfiniteScroll)
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
 Vue.prototype.$alert = MessageBox.alert

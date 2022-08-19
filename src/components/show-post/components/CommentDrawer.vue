@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-17 17:15:12
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-18 21:33:33
+ * @LastEditTime: 2022-08-19 15:24:24
  * @FilePath: \campus-grocery\src\components\show-post\components\CommentDrawer.vue
  * @Description: 帖子评论抽屉组件
 -->
@@ -87,10 +87,10 @@
 
         <div class="comment-input">
           <el-pagination
-            :page-size="6"
+            :page-size="pageSize"
             :total="commentNum"
             layout="prev, pager, next"
-            :pager-count="8"
+            :pager-count="pagerCount"
             :current-page.sync="currentCommentPage"
             @current-change="toCommentPage"
             v-if="commentList.length !== 0"
@@ -152,6 +152,11 @@ export default {
 
   data() {
     return {
+      pageSize: 6,
+
+      // 注意：ElementUI规定pagerCount的值只能是奇数
+      pagerCount: 9,
+
       vipList: {
         vip1,
         vip2,

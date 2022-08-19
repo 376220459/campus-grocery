@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-10 20:50:59
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-18 22:03:50
+ * @LastEditTime: 2022-08-20 00:26:11
  * @FilePath: \campus-grocery\src\components\home\TransactionBar.vue
  * @Description: 二手交易组件
 -->
@@ -273,8 +273,9 @@ export default {
         }
 
         .product-price {
-          font-size: 24px;
+          font-size: 18px;
           color: #ff5000;
+          font-weight: bold;
 
           .product-price-text {
             font-size: 15px;
