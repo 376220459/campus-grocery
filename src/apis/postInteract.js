@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-06 16:39:12
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-19 20:11:58
+ * @LastEditTime: 2022-08-20 15:54:27
  * @FilePath: \campus-grocery\src\apis\postInteract.js
  * @Description: 帖子交互信息相关接口
  */
@@ -73,4 +73,38 @@ async function getPostBuyList(payload) {
   }
 }
 
-export { getPostInteract, getPostSupportNum, getPostSupportList, getPostBuyNum, getPostBuyList }
+// 获取帖子评论数数接口
+async function getPostCommentNum(payload) {
+  try {
+    const res = await http.post('/getPostCommentNum', payload)
+    return res.data
+  } catch (error) {
+    return {
+      code: 0,
+      error,
+    }
+  }
+}
+
+// 获取帖子点赞列表接口
+async function getPostCommentList(payload) {
+  try {
+    const res = await http.post('/getPostCommentList', payload)
+    return res.data
+  } catch (error) {
+    return {
+      code: 0,
+      error,
+    }
+  }
+}
+
+export {
+  getPostInteract,
+  getPostSupportNum,
+  getPostSupportList,
+  getPostBuyNum,
+  getPostBuyList,
+  getPostCommentNum,
+  getPostCommentList,
+}

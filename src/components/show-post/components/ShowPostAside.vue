@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-18 18:58:36
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-20 00:28:50
+ * @LastEditTime: 2022-08-20 17:01:37
  * @FilePath: \campus-grocery\src\components\show-post\components\ShowPostAside.vue
  * @Description: 帖子展示界面侧边栏组件
 -->
@@ -24,7 +24,7 @@
         >
           <i class="iconfont icon-dianzan" />
           <p v-if="isOwnerPost">点赞列表</p>
-          <p v-else>{{ supportNum >= 999 ? '999+' : supportNum }} 人赞过</p>
+          <p v-else>{{ supportNum | overHandle }} 人赞过</p>
         </div>
       </PostInteractPopover>
 
@@ -33,7 +33,7 @@
         @click="openCommentDrawer"
       >
         <i class="iconfont icon-pinglun" />
-        <p>{{ commentNum >= 999 ? '999+' : commentNum }} 个评论</p>
+        <p>{{ commentNum | overHandle }} 个评论</p>
       </div>
 
       <PostInteractPopover
@@ -51,7 +51,7 @@
         >
           <i class="iconfont icon-dianyingpiao" />
           <p v-if="isOwnerPost">想要列表</p>
-          <p v-else>{{ buyNum >= 999 ? '999+' : buyNum }} 人想要</p>
+          <p v-else>{{ buyNum | overHandle }} 人想要</p>
         </div>
       </PostInteractPopover>
 
@@ -116,6 +116,12 @@ export default {
 
     isOwnerPost() {
       return this.userInfo.telNumber === this.postTelNumber
+    },
+  },
+
+  filters: {
+    overHandle(value) {
+      return value >= 999 ? '999+' : value
     },
   },
 

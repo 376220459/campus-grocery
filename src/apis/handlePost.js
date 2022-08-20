@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-13 16:39:12
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-18 20:38:45
+ * @LastEditTime: 2022-08-20 17:24:53
  * @FilePath: \campus-grocery\src\apis\handlePost.js
  * @Description: 操作帖子相关接口
  */
@@ -60,4 +60,17 @@ async function cancelBuyPost(payload) {
   }
 }
 
-export { supportPost, cancelSupportPost, buyPost, cancelBuyPost }
+// 想要帖子接口
+async function commentPost(payload) {
+  try {
+    const res = await http.post('/commentPost', payload)
+    return res.data
+  } catch (error) {
+    return {
+      code: 0,
+      error,
+    }
+  }
+}
+
+export { supportPost, cancelSupportPost, buyPost, cancelBuyPost, commentPost }

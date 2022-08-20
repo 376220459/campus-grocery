@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-17 17:15:12
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-19 15:24:24
+ * @LastEditTime: 2022-08-20 17:48:07
  * @FilePath: \campus-grocery\src\components\show-post\components\CommentDrawer.vue
  * @Description: 帖子评论抽屉组件
 -->
@@ -12,13 +12,14 @@
     :visible="commentDrawerSwitch"
     :wrapperClosable="false"
     @close="closeCommentDrawer"
+    @opened="openedCommentDrawer"
   >
     <p
       slot="title"
       class="comment-drawer-title"
     >
       共
-      <strong>{{ commentNum >= 999 ? '999+' : commentNum }}</strong>
+      <strong>{{ postCommentNum | overHandle }}</strong>
       条评论
     </p>
 
@@ -30,7 +31,7 @@
       <template>
         <p
           class="not-comment"
-          v-if="commentList.length === 0"
+          v-if="postCommentList.length === 0"
         >
           帖子还没有评论，快来占个沙发吧！
         </p>
@@ -40,20 +41,20 @@
           v-else
         >
           <div
-            v-for="comment in commentList"
+            v-for="comment in postCommentList"
             :key="comment.id"
             class="comment-container"
           >
             <img
-              :src="comment.head"
+              :src="comment.commentHead"
               class="user-head"
             />
 
             <div class="comment-container-right">
               <div class="user-nickname-container">
-                <p class="user-nickname">{{ comment.nickname }}</p>
+                <p class="user-nickname">{{ comment.commentNickname }}</p>
                 <img
-                  :src="vipList[`vip${comment.vip}`]"
+                  :src="vipList[`vip${comment.commentVip}`]"
                   class="vip"
                 />
               </div>
@@ -88,20 +89,20 @@
         <div class="comment-input">
           <el-pagination
             :page-size="pageSize"
-            :total="commentNum"
+            :total="postCommentNum"
             layout="prev, pager, next"
             :pager-count="pagerCount"
             :current-page.sync="currentCommentPage"
             @current-change="toCommentPage"
-            v-if="commentList.length !== 0"
+            v-if="postCommentList.length !== 0"
           >
           </el-pagination>
 
           <el-input
+            ref="commentInput"
             type="textarea"
             :rows="3"
             resize="none"
-            autofocus
             :maxlength="1000"
             :show-word-limit="true"
             placeholder="评论千万条，友善第一条"
@@ -128,6 +129,10 @@ import vip3 from '@/assets/images/vip3.png'
 import vip4 from '@/assets/images/vip4.png'
 import vip5 from '@/assets/images/vip5.png'
 import vip6 from '@/assets/images/vip6.png'
+import { getPostCommentNum, getPostCommentList } from '@/apis/postInteract'
+import { commentPost } from '@/apis/handlePost'
+import resHandle from '@/utils/resHandle'
+import getCurrentTime from '@/utils/getCurrentTime'
 
 export default {
   name: 'CommentDrawer',
@@ -152,7 +157,7 @@ export default {
 
   data() {
     return {
-      pageSize: 6,
+      pageSize: 7,
 
       // 注意：ElementUI规定pagerCount的值只能是奇数
       pagerCount: 9,
@@ -165,61 +170,28 @@ export default {
         vip5,
         vip6,
       },
-      commentNum: 1112,
+      postCommentNum: 0,
       commentLoading: false,
       currentCommentPage: 1,
       commentInput: '',
-      commentList: [
+      postCommentList: [
         {
           id: 0,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          vip: 6,
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 1,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          vip: 6,
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 2,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          vip: 6,
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 3,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          vip: 6,
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 4,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          vip: 6,
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
-        },
-        {
-          id: 5,
-          head: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F30%2F20200330091314_yNVUZ.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662635156&t=0d0bdfaf86b4c8f8a7483d13dc029da5',
-          nickname: 'Hole',
-          vip: 6,
-          commentTime: '2022-07-17',
-          commentContent: '可以小刀吗？还是感觉有点贵啊，6000以内可以考虑，哈哈。',
+          commentHead: '',
+          commentNickname: '',
+          commentVip: -1,
+          commentTime: '',
+          commentContent: '',
         },
       ],
     }
+  },
+
+  filters: {
+    // 大数字处理
+    overHandle(value) {
+      return value >= 999 ? '999+' : value
+    },
   },
 
   methods: {
@@ -233,19 +205,81 @@ export default {
       this.$emit('closeCommentDrawer')
     },
 
+    // 打开抽屉的回调
+    openedCommentDrawer() {
+      // 打开抽屉，让输入框获取焦点
+      this.$refs.commentInput.focus()
+    },
+
     // 前往某一页的回调
-    toCommentPage(pageNum) {
+    async toCommentPage() {
       this.commentLoading = true
-      setTimeout(() => {
-        this.commentLoading = false
-        alert(`切换到第${pageNum}页`)
-      }, 1000)
+      await this.getPostCommentList()
     },
 
     // 发送评论
-    comment() {
-      alert(`您评论的内容：${this.commentInput}`)
+    async comment() {
+      this.commentLoading = true
+
+      const res = await commentPost({
+        postType: this.postType,
+        id: this.id,
+        commentTime: getCurrentTime(),
+        commentContent: this.commentInput,
+      })
+      resHandle(res, {
+        successHandle: async () => {
+          await this.getPostCommentNum()
+          await this.getPostCommentList()
+          this.commentInput = ''
+        },
+      })
     },
+
+    // 获取评论数
+    async getPostCommentNum() {
+      const res = await getPostCommentNum({
+        postType: this.postType,
+        postId: this.id,
+      })
+
+      resHandle(res, {
+        successHandle: () => {
+          const postCommentNum = res.data.postCommentNum
+          this.postCommentNum = postCommentNum
+        },
+      })
+    },
+
+    // 获取评论列表
+    async getPostCommentList() {
+      const res = await getPostCommentList({
+        pageNum: this.currentCommentPage,
+        pageSize: this.pageSize,
+        postType: this.postType,
+        postId: this.id,
+      })
+
+      resHandle(res, {
+        successHandle: () => {
+          const postCommentList = res.data.postCommentList
+          this.postCommentList = postCommentList.map(postComment => {
+            const { id, commentHead, commentNickname, commentVip, commentTime, commentContent } = postComment
+            return { id, commentHead, commentNickname, commentVip, commentTime, commentContent }
+          })
+        },
+        finallyHandle: () => {
+          this.commentLoading = false
+        },
+      })
+    },
+  },
+
+  async created() {
+    this.commentLoading = true
+
+    await this.getPostCommentNum()
+    await this.getPostCommentList()
   },
 }
 </script>
@@ -269,6 +303,7 @@ export default {
   }
 
   .comment-list {
+    width: 100%;
     position: relative;
     margin-bottom: 250px;
     flex-grow: 1;
@@ -277,7 +312,27 @@ export default {
     align-items: center;
     overflow: auto;
 
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgb(239, 239, 239);
+      border-radius: 2px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #bfbfbf;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #333;
+    }
+    &::-webkit-scrollbar-corner {
+      background: #179a16;
+    }
+
     .comment-container {
+      width: 100%;
       margin: 20px 0;
       display: flex;
 
@@ -289,6 +344,7 @@ export default {
       }
 
       .comment-container-right {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -317,6 +373,7 @@ export default {
         .comment-content {
           line-height: 1.5em;
           margin: 5px 0 10px 0;
+          white-space: pre-wrap;
         }
 
         .comment-footer {
@@ -330,6 +387,7 @@ export default {
 
           .comment-handle {
             display: flex;
+            margin-right: 20px;
 
             .handle-container {
               cursor: pointer;
