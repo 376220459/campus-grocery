@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-19 16:01:54
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-19 18:22:13
+ * @LastEditTime: 2022-08-21 22:54:56
  * @FilePath: \campus-grocery\src\components\show-post\components\PostUserInfo.vue
  * @Description: 帖子发布者基本信息组件
 -->
@@ -68,7 +68,7 @@ export default {
     const res = await getUserInfo({ telNumber: this.telNumber })
     resHandle(res, {
       successHandle: () => {
-        const { head, nickname, vip, signature } = res.data
+        const { head, nickname, vip, signature } = res.data.userInfo
         ;[this.head, this.nickname, this.vip, this.signature] = [head, nickname, vip, signature]
       },
     })

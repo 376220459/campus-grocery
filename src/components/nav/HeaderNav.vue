@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-18 11:24:00
+ * @LastEditTime: 2022-08-22 00:07:39
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -162,35 +162,55 @@
 
           <div class="message">
             <el-badge
-              :value="userInfo.unreadSupportNum > 0 ? userInfo.unreadSupportNum : null"
+              :value="userInfo.unreadSupportNum | numFilter"
               :max="99"
             >
-              <i class="iconfont icon-dianzan" />
-              <p>点赞</p>
+              <div
+                class="interact"
+                @click="toMessagePage('support')"
+              >
+                <i class="iconfont icon-dianzan" />
+                <p>点赞</p>
+              </div>
             </el-badge>
 
             <el-badge
-              :value="userInfo.unreadCommentNum > 0 ? userInfo.unreadCommentNum : null"
+              :value="userInfo.unreadCommentNum | numFilter"
               :max="99"
             >
-              <i class="iconfont icon-pinglun" />
-              <p>评论</p>
+              <div
+                class="interact"
+                @click="toMessagePage('comment')"
+              >
+                <i class="iconfont icon-pinglun" />
+                <p>评论</p>
+              </div>
             </el-badge>
 
             <el-badge
-              :value="userInfo.unreadBuyNum > 0 ? userInfo.unreadBuyNum : null"
+              :value="userInfo.unreadBuyNum | numFilter"
               :max="99"
             >
-              <i class="iconfont icon-dianyingpiao" />
-              <p>求购</p>
+              <div
+                class="interact"
+                @click="toMessagePage('buy')"
+              >
+                <i class="iconfont icon-dianyingpiao" />
+                <p>求购</p>
+              </div>
             </el-badge>
 
             <el-badge
-              :value="userInfo.unreadSystemMessageNum > 0 ? userInfo.unreadSystemMessageNum : null"
+              :value="userInfo.unreadSystemMessageNum | numFilter"
               :max="99"
             >
-              <i class="iconfont icon-xiaoxizhongxin" />
-              <p>系统通知</p>
+              <div
+                class="interact"
+                @click="toMessagePage('system')"
+              >
+                <i class="iconfont icon-xiaoxizhongxin" />
+                <p>系统通知</p>
+              </div>
             </el-badge>
           </div>
         </el-popover>
@@ -263,6 +283,12 @@ export default {
     },
   },
 
+  filters: {
+    numFilter(value) {
+      return value > 0 ? value : null
+    },
+  },
+
   methods: {
     // 前往主页
     toHomePage() {
@@ -272,6 +298,11 @@ export default {
     // 前往发布帖界面
     toPostPage() {
       this.$router.push('/post')
+    },
+
+    // 前往消息界面
+    toMessagePage(tab) {
+      window.location.href = `/message?tab=${tab}`
     },
   },
 }
@@ -448,16 +479,19 @@ export default {
     @include scale-text;
     padding: 3px 3px 0 0;
     margin: 15px 0 0 15px;
-    font-size: 15px;
-    display: flex;
-    cursor: pointer;
-
-    i {
-      margin-right: 5px;
-    }
 
     &:nth-of-type(1) {
       margin-top: 10px;
+    }
+
+    .interact {
+      font-size: 15px;
+      display: flex;
+      cursor: pointer;
+
+      i {
+        margin-right: 5px;
+      }
     }
   }
 }

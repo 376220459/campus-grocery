@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-18 11:29:37
+ * @LastEditTime: 2022-08-21 22:55:49
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
@@ -18,6 +18,7 @@ import ErrorPage from '../views/ErrorPage.vue'
 import HomePage from '../views/HomePage.vue'
 import PostPage from '../views/PostPage.vue'
 import ShowPostPage from '../views/ShowPostPage.vue'
+import MessagePage from '../views/MessagePage.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ const routes = [
     path: '/showPost',
     name: 'showPost',
     component: ShowPostPage,
+  },
+  {
+    path: '/message',
+    name: 'message',
+    component: MessagePage,
   },
 ]
 
@@ -87,7 +93,7 @@ router.beforeEach(async (to, from, next) => {
     resHandle(res, {
       successHandle: () => {
         // 将用户信息存入store
-        store.commit('setUserInfo', res.data.userInfo)
+        store.commit('updateUserInfo', res.data.userInfo)
         next()
       },
       warningHandle: () => {
