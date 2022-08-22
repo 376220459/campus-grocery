@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 15:53:15
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-21 23:46:28
+ * @LastEditTime: 2022-08-22 21:52:57
  * @FilePath: \campus-grocery\src\views\MessagePage.vue
  * @Description: 用户消息界面
 -->
@@ -29,17 +29,16 @@
 
       <el-tab-pane name="comment">
         <p
-          v-if="userInfo.unreadCommentNum > 0"
           class="label"
           slot="label"
         >
           <span
-            v-if="userInfo.unreadSupportNum > 0"
+            v-if="userInfo.unreadCommentNum > 0"
             class="red-dot"
           ></span>
           <span>评论</span>
         </p>
-        <SupportMessageList v-if="currentTab === 'comment'" />
+        <CommentMessageList v-if="currentTab === 'comment'" />
       </el-tab-pane>
 
       <el-tab-pane name="buy">
@@ -53,7 +52,7 @@
           ></span>
           <span>求购</span>
         </p>
-        <SupportMessageList v-if="currentTab === 'buy'" />
+        <BuyMessageList v-if="currentTab === 'buy'" />
       </el-tab-pane>
 
       <el-tab-pane name="system">
@@ -62,12 +61,12 @@
           slot="label"
         >
           <span
-            v-if="userInfo.unreadSystemMessageNum > 0"
+            v-if="userInfo.unreadSystemNum > 0"
             class="red-dot"
           ></span>
           <span>系统</span>
         </p>
-        <SupportMessageList v-if="currentTab === 'system'" />
+        <SystemMessageList v-if="currentTab === 'system'" />
       </el-tab-pane>
     </el-tabs>
   </el-main>
@@ -75,12 +74,15 @@
 
 <script>
 import SupportMessageList from '@/components/message/SupportMessageList.vue'
+import CommentMessageList from '@/components/message/CommentMessageList.vue'
+import BuyMessageList from '@/components/message/BuyMessageList.vue'
+import SystemMessageList from '@/components/message/SystemMessageList.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'MessagePage',
 
-  components: { SupportMessageList },
+  components: { SupportMessageList, CommentMessageList, BuyMessageList, SystemMessageList },
 
   data() {
     return {

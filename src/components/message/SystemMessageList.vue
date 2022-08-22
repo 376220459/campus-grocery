@@ -2,17 +2,17 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 16:10:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-22 23:10:37
- * @FilePath: \campus-grocery\src\components\message\SupportMessageList.vue
- * @Description: 点赞消息列表组件
+ * @LastEditTime: 2022-08-22 23:07:17
+ * @FilePath: \campus-grocery\src\components\message\SystemMessageList.vue
+ * @Description: 系统消息列表组件
 -->
 <template>
   <div
-    class="support-message-list-container"
+    class="system-message-list-container"
     v-loading="loading"
   >
     <p class="title">
-      新增 <strong>{{ this.userInfo.unreadSupportNum }}</strong> 个点赞
+      新增 <strong>{{ this.userInfo.unreadSystemNum }}</strong> 个系统消息
     </p>
 
     <el-divider></el-divider>
@@ -20,28 +20,19 @@
     <div class="message-list">
       <div
         class="message-container"
-        v-for="(message, index) in supportList"
+        v-for="(message, index) in systemList"
         :key="message.id"
       >
-        <img
-          class="message-head"
-          :src="message.supportHead"
-        />
-
         <div class="message-main">
-          <div class="message-header">
-            <p class="nickname">{{ message.supportNickname }}</p>
-            <img
-              class="vip"
-              :src="vipList[`vip${message.supportVip}`]"
-            />
-            <p class="message-text">赞了你的帖子</p>
+          <div class="message-title">
+            <p class="text">系统</p>
+            <p class="title">{{ message.title }}</p>
           </div>
 
-          <p class="post-title">{{ message.postTitle }}</p>
+          <p class="message-content">{{ message.content }}</p>
         </div>
 
-        <p class="message-time">{{ message.supportTime }}</p>
+        <p class="message-time">{{ message.time }}</p>
 
         <div
           class="new-message"
@@ -54,7 +45,7 @@
 
     <el-pagination
       :page-size="pageSize"
-      :total="supportNum"
+      :total="systemNum"
       layout="prev, pager, next"
       :pager-count="pagerCount"
       :current-page.sync="currentPage"
@@ -71,12 +62,12 @@ import vip3 from '@/assets/images/vip3.png'
 import vip4 from '@/assets/images/vip4.png'
 import vip5 from '@/assets/images/vip5.png'
 import vip6 from '@/assets/images/vip6.png'
-import { getUnreadSupportNum, getSupportMessageList } from '@/apis/userMessage'
+import { getUnreadSystemNum, getSystemMessageList } from '@/apis/userMessage'
 import resHandle from '@/utils/resHandle'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  name: 'SupportMessageList',
+  name: 'SystemMessageList',
 
   data() {
     return {
@@ -92,11 +83,11 @@ export default {
       },
 
       pagerCount: 7,
-      pageSize: 8,
+      pageSize: 7,
       currentPage: 1,
 
-      supportNum: 0,
-      supportList: [],
+      systemNum: 0,
+      systemList: [],
     }
   },
 
@@ -110,29 +101,29 @@ export default {
     // 判断当前消息是否未读（仅用于显示newTag）
     newTagHandle(index) {
       const currentIndex = (this.currentPage - 1) * this.pageSize + (index + 1)
-      return currentIndex <= this.userInfo.unreadSupportNum
+      return currentIndex <= this.userInfo.unreadSystemNum
     },
 
-    // 在store中更新用户未读点赞数
-    async updateSupportNum() {
-      const res = await getUnreadSupportNum()
+    // 在store中更新用户未读系统消息数
+    async updateSystemNum() {
+      const res = await getUnreadSystemNum()
       resHandle(res, {
         successHandle: () => {
-          this.updateUserInfo({ unreadSupportNum: res.data.unreadSupportNum })
+          this.updateUserInfo({ unreadSystemNum: res.data.unreadSystemNum })
         },
       })
     },
 
-    // 获取点赞消息列表
-    async getSupportMessageList() {
-      const res = await getSupportMessageList({
+    // 获取系统消息消息列表
+    async getSystemMessageList() {
+      const res = await getSystemMessageList({
         pageNum: this.currentPage,
         pageSize: this.pageSize,
       })
       resHandle(res, {
         successHandle: () => {
-          this.supportNum = res.data.supportNum
-          this.supportList = res.data.supportList
+          this.systemNum = res.data.systemNum
+          this.systemList = res.data.systemList
         },
         finallyHandle: () => {
           this.loading = false
@@ -143,25 +134,25 @@ export default {
     async toPage() {
       this.loading = true
 
-      await this.getSupportMessageList()
+      await this.getSystemMessageList()
     },
   },
 
   async created() {
     this.loading = true
 
-    await this.updateSupportNum()
-    await this.getSupportMessageList()
+    await this.updateSystemNum()
+    await this.getSystemMessageList()
   },
 
   async beforeDestroy() {
-    await this.updateSupportNum()
+    await this.updateSystemNum()
   },
 }
 </script>
 
 <style scoped lang="scss">
-.support-message-list-container {
+.system-message-list-container {
   position: relative;
   height: 100%;
   padding: 0 20px 100px 20px;
@@ -205,60 +196,45 @@ export default {
       position: relative;
       width: 100%;
       display: flex;
-      padding: 30px 0;
+      flex-direction: column;
+      padding: 20px 0;
       border-bottom: 1px solid #e4e7ed;
-
-      .message-head {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
 
       .message-main {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        margin-bottom: 15px;
 
-        .message-header {
+        .message-title {
           display: flex;
-          justify-items: center;
+          align-items: center;
+          margin-bottom: 15px;
 
-          .nickname {
+          .text {
+            padding: 2px 5px;
+            font-size: 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 3px;
+            margin-right: 5px;
+          }
+
+          .title {
             font-weight: bold;
-            cursor: pointer;
-
-            &:hover {
-              color: #409eff;
-            }
-          }
-
-          .vip {
-            height: 15px;
-            margin: 0 10px 0 3px;
-          }
-
-          .message-text {
-            color: #909399;
           }
         }
 
-        .post-title {
-          color: #606266;
-          font-weight: bold;
+        .message-content {
+          padding: 0 20px;
           text-align: left;
-          cursor: pointer;
-
-          &:hover {
-            color: #409eff;
-          }
+          line-height: 1.5em;
         }
       }
 
       .message-time {
         display: flex;
-        align-items: flex-end;
+        justify-content: end;
         color: #909399;
       }
 

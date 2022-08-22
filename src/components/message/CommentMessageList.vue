@@ -2,17 +2,17 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 16:10:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-22 23:10:37
- * @FilePath: \campus-grocery\src\components\message\SupportMessageList.vue
- * @Description: 点赞消息列表组件
+ * @LastEditTime: 2022-08-22 23:09:37
+ * @FilePath: \campus-grocery\src\components\message\CommentMessageList.vue
+ * @Description: 评论消息列表组件
 -->
 <template>
   <div
-    class="support-message-list-container"
+    class="comment-message-list-container"
     v-loading="loading"
   >
     <p class="title">
-      新增 <strong>{{ this.userInfo.unreadSupportNum }}</strong> 个点赞
+      新增 <strong>{{ this.userInfo.unreadCommentNum }}</strong> 个评论
     </p>
 
     <el-divider></el-divider>
@@ -20,28 +20,28 @@
     <div class="message-list">
       <div
         class="message-container"
-        v-for="(message, index) in supportList"
+        v-for="(message, index) in commentList"
         :key="message.id"
       >
         <img
           class="message-head"
-          :src="message.supportHead"
+          :src="message.commentHead"
         />
 
         <div class="message-main">
           <div class="message-header">
-            <p class="nickname">{{ message.supportNickname }}</p>
+            <p class="nickname">{{ message.commentNickname }}</p>
             <img
               class="vip"
-              :src="vipList[`vip${message.supportVip}`]"
+              :src="vipList[`vip${message.commentVip}`]"
             />
-            <p class="message-text">赞了你的帖子</p>
+            <p class="message-text">评论了你的帖子</p>
           </div>
 
           <p class="post-title">{{ message.postTitle }}</p>
         </div>
 
-        <p class="message-time">{{ message.supportTime }}</p>
+        <p class="message-time">{{ message.commentTime }}</p>
 
         <div
           class="new-message"
@@ -54,7 +54,7 @@
 
     <el-pagination
       :page-size="pageSize"
-      :total="supportNum"
+      :total="commentNum"
       layout="prev, pager, next"
       :pager-count="pagerCount"
       :current-page.sync="currentPage"
@@ -71,12 +71,12 @@ import vip3 from '@/assets/images/vip3.png'
 import vip4 from '@/assets/images/vip4.png'
 import vip5 from '@/assets/images/vip5.png'
 import vip6 from '@/assets/images/vip6.png'
-import { getUnreadSupportNum, getSupportMessageList } from '@/apis/userMessage'
+import { getUnreadCommentNum, getCommentMessageList } from '@/apis/userMessage'
 import resHandle from '@/utils/resHandle'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  name: 'SupportMessageList',
+  name: 'CommentMessageList',
 
   data() {
     return {
@@ -95,8 +95,8 @@ export default {
       pageSize: 8,
       currentPage: 1,
 
-      supportNum: 0,
-      supportList: [],
+      commentNum: 0,
+      commentList: [],
     }
   },
 
@@ -110,29 +110,29 @@ export default {
     // 判断当前消息是否未读（仅用于显示newTag）
     newTagHandle(index) {
       const currentIndex = (this.currentPage - 1) * this.pageSize + (index + 1)
-      return currentIndex <= this.userInfo.unreadSupportNum
+      return currentIndex <= this.userInfo.unreadCommentNum
     },
 
-    // 在store中更新用户未读点赞数
-    async updateSupportNum() {
-      const res = await getUnreadSupportNum()
+    // 在store中更新用户未读评论数
+    async updateCommentNum() {
+      const res = await getUnreadCommentNum()
       resHandle(res, {
         successHandle: () => {
-          this.updateUserInfo({ unreadSupportNum: res.data.unreadSupportNum })
+          this.updateUserInfo({ unreadCommentNum: res.data.unreadCommentNum })
         },
       })
     },
 
-    // 获取点赞消息列表
-    async getSupportMessageList() {
-      const res = await getSupportMessageList({
+    // 获取评论消息列表
+    async getCommentMessageList() {
+      const res = await getCommentMessageList({
         pageNum: this.currentPage,
         pageSize: this.pageSize,
       })
       resHandle(res, {
         successHandle: () => {
-          this.supportNum = res.data.supportNum
-          this.supportList = res.data.supportList
+          this.commentNum = res.data.commentNum
+          this.commentList = res.data.commentList
         },
         finallyHandle: () => {
           this.loading = false
@@ -143,25 +143,25 @@ export default {
     async toPage() {
       this.loading = true
 
-      await this.getSupportMessageList()
+      await this.getCommentMessageList()
     },
   },
 
   async created() {
     this.loading = true
 
-    await this.updateSupportNum()
-    await this.getSupportMessageList()
+    await this.updateCommentNum()
+    await this.getCommentMessageList()
   },
 
   async beforeDestroy() {
-    await this.updateSupportNum()
+    await this.updateCommentNum()
   },
 }
 </script>
 
 <style scoped lang="scss">
-.support-message-list-container {
+.comment-message-list-container {
   position: relative;
   height: 100%;
   padding: 0 20px 100px 20px;

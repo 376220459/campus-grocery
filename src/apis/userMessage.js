@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-06 16:39:12
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-21 18:48:39
+ * @LastEditTime: 2022-08-22 22:07:05
  * @FilePath: \campus-grocery\src\apis\userMessage.js
  * @Description: 用户消息相关接口
  */
@@ -21,7 +21,7 @@ async function getUnreadSupportNum() {
   }
 }
 
-// 获取未读点赞数
+// 获取未读评论数
 async function getUnreadCommentNum() {
   try {
     const res = await http.get('/getUnreadCommentNum')
@@ -34,7 +34,7 @@ async function getUnreadCommentNum() {
   }
 }
 
-// 获取未读点赞数
+// 获取未读求购数
 async function getUnreadBuyNum() {
   try {
     const res = await http.get('/getUnreadBuyNum')
@@ -47,10 +47,10 @@ async function getUnreadBuyNum() {
   }
 }
 
-// 获取未读点赞数
-async function getUnreadSystemMessageNum() {
+// 获取未读系统消息数
+async function getUnreadSystemNum() {
   try {
-    const res = await http.get('/getUnreadSystemMessageNum')
+    const res = await http.get('/getUnreadSystemNum')
     return res.data
   } catch (error) {
     return {
@@ -116,7 +116,7 @@ export {
   getUnreadSupportNum,
   getUnreadCommentNum,
   getUnreadBuyNum,
-  getUnreadSystemMessageNum,
+  getUnreadSystemNum,
   getSupportMessageList,
   getCommentMessageList,
   getBuyMessageList,

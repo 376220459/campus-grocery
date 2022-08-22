@@ -21,6 +21,6 @@ export default {
     unreadSupportNum: 0,
     unreadCommentNum: 0,
     unreadBuyNum: 0,
-    unreadSystemMessageNum: 0,
+    unreadSystemNum: 0,
   },
 }

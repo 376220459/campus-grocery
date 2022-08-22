@@ -201,7 +201,7 @@
             </el-badge>
 
             <el-badge
-              :value="userInfo.unreadSystemMessageNum | numFilter"
+              :value="userInfo.unreadSystemNum | numFilter"
               :max="99"
             >
               <div
@@ -278,8 +278,8 @@ export default {
 
     // 是否有未读消息的标志
     unreadMessageSign() {
-      const { unreadSupportNum, unreadCommentNum, unreadBuyNum, unreadSystemMessageNum } = this.userInfo
-      return unreadSupportNum > 0 || unreadCommentNum > 0 || unreadBuyNum > 0 || unreadSystemMessageNum > 0
+      const { unreadSupportNum, unreadCommentNum, unreadBuyNum, unreadSystemNum } = this.userInfo
+      return unreadSupportNum > 0 || unreadCommentNum > 0 || unreadBuyNum > 0 || unreadSystemNum > 0
     },
   },
 
