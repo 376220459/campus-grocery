@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 16:10:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-22 23:07:17
+ * @LastEditTime: 2022-08-23 19:53:39
  * @FilePath: \campus-grocery\src\components\message\SystemMessageList.vue
  * @Description: 系统消息列表组件
 -->
@@ -12,7 +12,7 @@
     v-loading="loading"
   >
     <p class="title">
-      新增 <strong>{{ this.userInfo.unreadSystemNum }}</strong> 个系统消息
+      新增 <strong>{{ this.userInfo.unreadSystemNum }}</strong> 个系统消息<span>（共{{ systemNum }}条记录）</span>
     </p>
 
     <el-divider></el-divider>
@@ -165,6 +165,10 @@ export default {
     strong {
       color: #e6a23c;
     }
+
+    span {
+      color: #c0c4cc;
+    }
   }
 
   .message-list {
@@ -172,25 +176,6 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     overflow: auto;
-
-    &::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    &::-webkit-scrollbar-track {
-      background: rgb(239, 239, 239);
-      border-radius: 2px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #bfbfbf;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-      background: #333;
-    }
-    &::-webkit-scrollbar-corner {
-      background: #179a16;
-    }
 
     .message-container {
       position: relative;
@@ -236,6 +221,7 @@ export default {
         display: flex;
         justify-content: end;
         color: #909399;
+        margin-right: 10px;
       }
 
       .new-message {

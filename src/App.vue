@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-15 17:36:29
+ * @LastEditTime: 2022-08-23 18:40:53
  * @FilePath: \campus-grocery\src\App.vue
  * @Description: App.vue文件
 -->
@@ -44,6 +44,25 @@ body {
   padding: 0;
   box-sizing: border-box;
   // user-select: none;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #333;
+  }
+  &::-webkit-scrollbar-corner {
+    background: #179a16;
+  }
 }
 
 // ---------------------------------分割线--------------------------------------------

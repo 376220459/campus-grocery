@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-19 17:16:30
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-20 00:24:00
+ * @LastEditTime: 2022-08-23 18:41:30
  * @FilePath: \campus-grocery\src\components\show-post\components\PostInteractPopover.vue
  * @Description: 帖子交互信息弹窗组件
 -->
@@ -289,25 +289,6 @@ export default {
     height: 250px;
     overflow: auto;
     padding: 0 5px;
-
-    &::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    &::-webkit-scrollbar-track {
-      background: rgb(239, 239, 239);
-      border-radius: 2px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #bfbfbf;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-      background: #333;
-    }
-    &::-webkit-scrollbar-corner {
-      background: #179a16;
-    }
 
     .record {
       margin-bottom: 10px;

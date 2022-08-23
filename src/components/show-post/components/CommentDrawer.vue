@@ -312,25 +312,6 @@ export default {
     align-items: center;
     overflow: auto;
 
-    &::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    &::-webkit-scrollbar-track {
-      background: rgb(239, 239, 239);
-      border-radius: 2px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #bfbfbf;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-      background: #333;
-    }
-    &::-webkit-scrollbar-corner {
-      background: #179a16;
-    }
-
     .comment-container {
       width: 100%;
       margin: 20px 0;

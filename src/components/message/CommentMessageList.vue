@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 16:10:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-22 23:09:37
+ * @LastEditTime: 2022-08-23 19:52:02
  * @FilePath: \campus-grocery\src\components\message\CommentMessageList.vue
  * @Description: 评论消息列表组件
 -->
@@ -12,7 +12,7 @@
     v-loading="loading"
   >
     <p class="title">
-      新增 <strong>{{ this.userInfo.unreadCommentNum }}</strong> 个评论
+      新增 <strong>{{ this.userInfo.unreadCommentNum }}</strong> 个评论<span>（共{{ commentNum }}条记录）</span>
     </p>
 
     <el-divider></el-divider>
@@ -39,9 +39,21 @@
           </div>
 
           <p class="post-title">{{ message.postTitle }}</p>
+
+          <el-divider content-position="left"><i class="el-icon-chat-line-square" /></el-divider>
+
+          <p class="comment-content">{{ message.commentContent }}</p>
         </div>
 
-        <p class="message-time">{{ message.commentTime }}</p>
+        <div class="message-right">
+          <p class="time">{{ message.commentTime }}</p>
+          <p
+            class="reply"
+            @click="notOpen"
+          >
+            回复
+          </p>
+        </div>
 
         <div
           class="new-message"
@@ -92,7 +104,7 @@ export default {
       },
 
       pagerCount: 7,
-      pageSize: 8,
+      pageSize: 5,
       currentPage: 1,
 
       commentNum: 0,
@@ -106,6 +118,11 @@ export default {
 
   methods: {
     ...mapMutations(['updateUserInfo']),
+
+    // 未开通功能提示
+    notOpen() {
+      this.$message.warning('此功能未开通')
+    },
 
     // 判断当前消息是否未读（仅用于显示newTag）
     newTagHandle(index) {
@@ -174,6 +191,10 @@ export default {
     strong {
       color: #e6a23c;
     }
+
+    span {
+      color: #c0c4cc;
+    }
   }
 
   .message-list {
@@ -182,31 +203,12 @@ export default {
     align-items: flex-start;
     overflow: auto;
 
-    &::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    &::-webkit-scrollbar-track {
-      background: rgb(239, 239, 239);
-      border-radius: 2px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #bfbfbf;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-      background: #333;
-    }
-    &::-webkit-scrollbar-corner {
-      background: #179a16;
-    }
-
     .message-container {
       position: relative;
       width: 100%;
       display: flex;
       padding: 30px 0;
-      border-bottom: 1px solid #e4e7ed;
+      // border-bottom: 1px solid #e4e7ed;
 
       .message-head {
         width: 50px;
@@ -254,12 +256,31 @@ export default {
             color: #409eff;
           }
         }
+
+        .comment-content {
+          text-align: left;
+        }
       }
 
-      .message-time {
+      .message-right {
         display: flex;
-        align-items: flex-end;
-        color: #909399;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-right: 10px;
+
+        .time {
+          color: #909399;
+        }
+
+        .reply {
+          color: black;
+          font-weight: bold;
+          cursor: pointer;
+
+          &:hover {
+            color: #409eff;
+          }
+        }
       }
 
       .new-message {
