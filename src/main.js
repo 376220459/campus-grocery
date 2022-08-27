@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-19 23:33:01
+ * @LastEditTime: 2022-08-27 15:35:38
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -14,6 +14,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/iconfont/iconfont.css'
 import '@/assets/iconfont/iconfont.js'
 import dateFormat from 'dateformat'
+import VueCookies from 'vue-cookies'
 
 import {
   Container,
@@ -79,6 +80,7 @@ Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$msgbox = MessageBox
 
 Vue.prototype.$dateFormat = dateFormat
+Vue.prototype.$cookies = VueCookies
 
 Vue.config.productionTip = false
 

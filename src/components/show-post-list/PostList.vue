@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-25 19:04:23
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-25 22:36:01
+ * @LastEditTime: 2022-08-27 16:59:53
  * @FilePath: \campus-grocery\src\components\show-post-list\PostList.vue
  * @Description: 帖子列表
 -->
@@ -11,7 +11,21 @@
     class="post-list"
     v-loading="loading"
   >
-    <p style="color: red; font-size: 80px">以下是“SearchData”的搜索结果</p>
+    <p
+      class="search-tips"
+      v-if="searchData && !userPostList"
+    >
+      以下是 <strong class="search-data">{{ searchData }}</strong> 的搜索结果（共
+      <strong class="post-num">{{ searchPostListNum }}</strong> 条内容）：
+    </p>
+
+    <p
+      v-if="userPostList"
+      class="user-post-tips"
+    >
+      我的发布（共
+      <strong class="post-num">{{ userPostListNum }}</strong> 条内容）：
+    </p>
 
     <BasePostPreview
       v-for="postItem in postList"
@@ -21,7 +35,7 @@
 
     <el-pagination
       :page-size="pageSize"
-      :total="postListNum"
+      :total="currentListNum"
       layout="prev, pager, next"
       :pager-count="pagerCount"
       :current-page.sync="currentPage"
@@ -56,7 +70,22 @@ export default {
       postListNum: 0,
       currentPage: 1,
       postList: [],
+      searchData: '',
+      searchPostListNum: 0,
+      userPostList: false,
+      userPostListNum: 0,
     }
+  },
+
+  computed: {
+    currentListNum() {
+      if (this.userPostList) {
+        return this.userPostListNum
+      } else if (this.searchData) {
+        return this.searchPostListNum
+      }
+      return this.postListNum
+    },
   },
 
   methods: {
@@ -77,12 +106,18 @@ export default {
         postType: this.postType,
         pageNum: this.currentPage,
         pageSize: this.pageSize,
+        searchData: this.searchData,
+        userPostList: this.userPostList,
       })
 
       resHandle(res, {
         successHandle: () => {
-          const postList = res.data.postList
-          this.postList = postList
+          const { postList, searchPostListNum, userPostListNum } = res.data
+          ;[this.postList, this.searchPostListNum, this.userPostListNum] = [
+            postList,
+            searchPostListNum,
+            userPostListNum,
+          ]
         },
         finallyHandle: () => {
           this.loading = false
@@ -99,6 +134,16 @@ export default {
 
   async created() {
     this.loading = true
+
+    const { searchData, userPostList } = this.$route.query
+    if (searchData) {
+      this.searchData = searchData
+    }
+
+    if (userPostList === '1') {
+      this.userPostList = userPostList
+    }
+
     await this.getPostListNum()
     await this.getPostList2()
   },
@@ -113,6 +158,22 @@ export default {
   flex-direction: column;
   align-items: center;
   overflow: auto;
+
+  .search-tips,
+  .user-post-tips {
+    color: #909399;
+    margin-bottom: 10px;
+
+    .post-num {
+      color: #e6a23c;
+    }
+  }
+
+  .search-tips {
+    .search-data {
+      color: #f56c6c;
+    }
+  }
 
   .el-pagination {
     position: fixed;

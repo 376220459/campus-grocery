@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-23 20:21:49
+ * @LastEditTime: 2022-08-27 17:24:13
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
@@ -20,43 +20,64 @@ import PostPage from '../views/PostPage.vue'
 import ShowPostPage from '../views/ShowPostPage.vue'
 import MessagePage from '../views/MessagePage.vue'
 import ShowPostListPage from '../views/ShowPostListPage.vue'
+import UserInteractPage from '../views/UserInteractPage.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  // 404界面
   {
     path: '*',
     name: 'error',
     component: ErrorPage,
   },
+
+  // 首页重定向
   {
     path: '/',
     redirect: '/home',
   },
+
+  // 首页
   {
     path: '/home',
     name: 'home',
     component: HomePage,
   },
+
+  // 发布帖子界面
   {
     path: '/post',
     name: 'post',
     component: PostPage,
   },
+
+  // 展示帖子详情界面
   {
     path: '/showPost',
     name: 'showPost',
     component: ShowPostPage,
   },
+
+  // 用户消息界面
   {
     path: '/message',
     name: 'message',
     component: MessagePage,
   },
+
+  // 帖子列表界面
   {
     path: '/showPostList',
     name: 'showPostList',
     component: ShowPostListPage,
+  },
+
+  // 用户互动界面
+  {
+    path: '/userInteract',
+    name: 'userInteract',
+    component: UserInteractPage,
   },
 ]
 

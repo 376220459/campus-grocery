@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 16:10:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-23 19:53:06
+ * @LastEditTime: 2022-08-27 17:11:12
  * @FilePath: \campus-grocery\src\components\message\BuyMessageList.vue
  * @Description: 求购消息列表组件
 -->
@@ -38,7 +38,12 @@
             <p class="message-text">求购了你的帖子</p>
           </div>
 
-          <p class="post-title">{{ message.postTitle }}</p>
+          <p
+            class="post-title"
+            @click="toPost(message)"
+          >
+            {{ message.postTitle }}
+          </p>
         </div>
 
         <p class="message-time">{{ message.buyTime }}</p>
@@ -140,10 +145,17 @@ export default {
       })
     },
 
+    // 前往某一页
     async toPage() {
       this.loading = true
 
       await this.getBuyMessageList()
+    },
+
+    // 前往帖子界面
+    toPost(message) {
+      const { postId: id, postType } = message
+      this.$router.push(`/showPost?postType=${postType}&id=${id}`)
     },
   },
 

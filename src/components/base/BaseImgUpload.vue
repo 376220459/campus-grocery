@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-12 19:59:54
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-13 21:36:19
+ * @LastEditTime: 2022-08-27 14:32:12
  * @FilePath: \campus-grocery\src\components\base\BaseImgUpload.vue
  * @Description: 基础组件-图片上传
 -->
@@ -103,6 +103,11 @@ export default {
         e.preventDefault()
         this.$alert(this.tips, '注意', {
           confirmButtonText: '我已了解',
+          callback: action => {
+            if (action === 'confirm') {
+              document.getElementsByClassName('el-upload__input')[0].click()
+            }
+          },
         })
         this.firstUploadTag = false
       }

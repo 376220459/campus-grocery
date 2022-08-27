@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-25 19:07:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-25 22:33:07
+ * @LastEditTime: 2022-08-27 16:28:57
  * @FilePath: \campus-grocery\src\components\base\BasePostPreview.vue
  * @Description: 帖子预览组件（主要用于帖子列表界面）
 -->
@@ -42,6 +42,8 @@
             class="el-icon-more extend"
             @click.stop="notOpen"
           />
+
+          <p class="time">{{ postData.postTime }}</p>
         </footer>
       </div>
     </main>
@@ -175,6 +177,11 @@ export default {
           &:hover {
             color: #409eff;
           }
+        }
+
+        .time {
+          color: #909399;
+          margin-left: auto;
         }
       }
     }

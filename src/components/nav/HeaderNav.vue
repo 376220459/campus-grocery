@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-22 00:07:39
+ * @LastEditTime: 2022-08-27 18:20:26
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -17,9 +17,10 @@
 
     <div class="search-input">
       <el-input
-        placeholder="看看今天有什么校园大事件"
-        v-model="searchInput"
         class="input-with-select"
+        placeholder="看看今天有什么校园大事件"
+        v-model.trim="searchInput"
+        @keyup.enter.native="search"
       >
         <el-select
           v-model="selectValue"
@@ -27,19 +28,19 @@
         >
           <el-option
             label="二手交易"
-            value="transaction_posts"
+            value="transaction"
           ></el-option>
           <el-option
             label="趣闻轶事"
-            value="campus_posts"
+            value="campus"
           ></el-option>
           <el-option
             label="失物招领"
-            value="lost_posts"
+            value="lost"
           ></el-option>
           <el-option
             label="广告推广"
-            value="advert_posts"
+            value="advert"
           ></el-option>
         </el-select>
       </el-input>
@@ -47,6 +48,7 @@
       <el-button
         icon="el-icon-search"
         type="warning"
+        @click="search"
       ></el-button>
     </div>
 
@@ -115,7 +117,10 @@
               <p>账号信息</p>
             </div>
 
-            <div class="nav">
+            <div
+              class="nav"
+              @click="toUserPostList"
+            >
               <svg
                 class="icon nav-icon"
                 aria-hidden="true"
@@ -125,7 +130,10 @@
               <p>我的发布</p>
             </div>
 
-            <div class="nav">
+            <div
+              class="nav"
+              @click="toUserInteract"
+            >
               <svg
                 class="icon nav-icon"
                 aria-hidden="true"
@@ -138,7 +146,10 @@
 
           <el-divider></el-divider>
 
-          <div class="logout">
+          <div
+            class="logout"
+            @click="logout"
+          >
             <div class="logout-container">
               <i class="icon icon-tuichu" />
               <p>退出</p>
@@ -247,13 +258,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import vip1 from '@/assets/images/vip1.png'
 import vip2 from '@/assets/images/vip2.png'
 import vip3 from '@/assets/images/vip3.png'
 import vip4 from '@/assets/images/vip4.png'
 import vip5 from '@/assets/images/vip5.png'
 import vip6 from '@/assets/images/vip6.png'
+import { logout } from '@/apis/userAccount'
+import resHandle from '@/utils/resHandle'
 
 export default {
   name: 'HeaderNav',
@@ -261,7 +274,7 @@ export default {
   data() {
     return {
       searchInput: '',
-      selectValue: 'transaction_posts',
+      selectValue: 'campus',
       vipList: {
         vip1,
         vip2,
@@ -290,6 +303,8 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['updateLoading']),
+
     // 前往主页
     toHomePage() {
       window.location.href = '/home'
@@ -297,12 +312,52 @@ export default {
 
     // 前往发布帖界面
     toPostPage() {
-      this.$router.push('/post')
+      window.location.href = '/post'
     },
 
     // 前往消息界面
     toMessagePage(tab) {
       window.location.href = `/message?tab=${tab}`
+    },
+
+    // 模糊搜索
+    search() {
+      window.location.href = `/showPostList?postType=${this.selectValue}&searchData=${this.searchInput}`
+    },
+
+    // 前往用户帖子列表界面
+    toUserPostList() {
+      window.location.href = `/showPostList?userPostList=1`
+    },
+
+    // 前往用户互动界面
+    toUserInteract() {
+      window.location.href = `/userInteract`
+    },
+    // 退出登录
+    async logout() {
+      this.updateLoading({
+        loading: true,
+        loadingText: '正在注销登录，请稍等...',
+      })
+
+      const res = await logout()
+
+      // 增加视觉延迟
+      setTimeout(() => {
+        resHandle(res, {
+          finallyHandle: () => {
+            // 跳转前先删除旧的登录token
+            this.$cookies.remove('auth_token')
+
+            window.location.href = process.env.VUE_APP_LOGIN
+
+            this.updateLoading({
+              loading: false,
+            })
+          },
+        })
+      }, 1000)
     },
   },
 }

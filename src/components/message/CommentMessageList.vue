@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 16:10:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-23 19:52:02
+ * @LastEditTime: 2022-08-27 18:43:55
  * @FilePath: \campus-grocery\src\components\message\CommentMessageList.vue
  * @Description: 评论消息列表组件
 -->
@@ -38,7 +38,12 @@
             <p class="message-text">评论了你的帖子</p>
           </div>
 
-          <p class="post-title">{{ message.postTitle }}</p>
+          <p
+            class="post-title"
+            @click="toPost(message)"
+          >
+            {{ message.postTitle }}
+          </p>
 
           <el-divider content-position="left"><i class="el-icon-chat-line-square" /></el-divider>
 
@@ -157,10 +162,17 @@ export default {
       })
     },
 
+    // 前往某一页
     async toPage() {
       this.loading = true
 
       await this.getCommentMessageList()
+    },
+
+    // 前往帖子界面
+    toPost(message) {
+      const { postId: id, postType } = message
+      this.$router.push(`/showPost?postType=${postType}&id=${id}`)
     },
   },
 
@@ -259,6 +271,7 @@ export default {
 
         .comment-content {
           text-align: left;
+          white-space: pre-wrap;
         }
       }
 
@@ -269,6 +282,7 @@ export default {
         padding-right: 10px;
 
         .time {
+          min-width: 85px;
           color: #909399;
         }
 

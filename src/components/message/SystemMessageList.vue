@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-21 16:10:20
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-23 19:53:39
+ * @LastEditTime: 2022-08-27 17:13:26
  * @FilePath: \campus-grocery\src\components\message\SystemMessageList.vue
  * @Description: 系统消息列表组件
 -->
@@ -131,6 +131,7 @@ export default {
       })
     },
 
+    // 前往某一页
     async toPage() {
       this.loading = true
 
