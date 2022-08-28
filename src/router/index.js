@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-27 17:24:13
+ * @LastEditTime: 2022-08-28 16:13:33
  * @FilePath: \campus-grocery\src\router\index.js
  * @Description: 路由配置
  */
@@ -21,6 +21,8 @@ import ShowPostPage from '../views/ShowPostPage.vue'
 import MessagePage from '../views/MessagePage.vue'
 import ShowPostListPage from '../views/ShowPostListPage.vue'
 import UserInteractPage from '../views/UserInteractPage.vue'
+import UserAccountPage from '../views/UserAccountPage.vue'
+import UserInfoPage from '../views/UserInfoPage.vue'
 
 Vue.use(VueRouter)
 
@@ -78,6 +80,20 @@ const routes = [
     path: '/userInteract',
     name: 'userInteract',
     component: UserInteractPage,
+  },
+
+  // 用户账号信息界面
+  {
+    path: '/userAccount',
+    name: 'userAccount',
+    component: UserAccountPage,
+  },
+
+  // 用户个人信息界面
+  {
+    path: '/userInfo',
+    name: 'userInfo',
+    component: UserInfoPage,
   },
 ]
 

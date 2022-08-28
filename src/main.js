@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-01 20:12:02
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-27 15:35:38
+ * @LastEditTime: 2022-08-28 16:39:51
  * @FilePath: \campus-grocery\src\main.js
  * @Description:
  */
@@ -46,6 +46,9 @@ import {
   Backtop,
   Drawer,
   InfiniteScroll,
+  Descriptions,
+  DescriptionsItem,
+  DatePicker,
 } from 'element-ui'
 
 Vue.use(Container)
@@ -73,6 +76,9 @@ Vue.use(Upload)
 Vue.use(Dialog)
 Vue.use(Backtop)
 Vue.use(Drawer)
+Vue.use(Descriptions)
+Vue.use(DescriptionsItem)
+Vue.use(DatePicker)
 Vue.use(InfiniteScroll)
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

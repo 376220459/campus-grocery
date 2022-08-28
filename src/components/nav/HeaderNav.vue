@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-27 18:20:26
+ * @LastEditTime: 2022-08-28 16:18:28
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -97,7 +97,10 @@
           <el-divider></el-divider>
 
           <div class="info-nav">
-            <div class="nav">
+            <div
+              class="nav"
+              @click="toUserInfoPage"
+            >
               <svg
                 class="icon nav-icon"
                 aria-hidden="true"
@@ -107,7 +110,10 @@
               <p>个人中心</p>
             </div>
 
-            <div class="nav">
+            <div
+              class="nav"
+              @click="toUserAccountPage"
+            >
               <svg
                 class="icon nav-icon"
                 aria-hidden="true"
@@ -167,6 +173,7 @@
           <div
             slot="reference"
             class="user-message-text"
+            @click="toMessagePage('support')"
           >
             消息
           </div>
@@ -334,6 +341,17 @@ export default {
     toUserInteract() {
       window.location.href = `/userInteract`
     },
+
+    // 前往用户个人信息界面
+    toUserInfoPage() {
+      window.location.href = `/userInfo`
+    },
+
+    // 前往用户账号信息界面
+    toUserAccountPage() {
+      window.location.href = `/userAccount`
+    },
+
     // 退出登录
     async logout() {
       this.updateLoading({
