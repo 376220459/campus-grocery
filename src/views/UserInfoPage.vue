@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-28 14:55:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-28 18:11:52
+ * @LastEditTime: 2022-09-18 17:54:12
  * @FilePath: \campus-grocery\src\views\UserInfoPage.vue
  * @Description: 用户个人信息界面
 -->
@@ -22,16 +22,27 @@
               type="primary"
               size="small"
               @click="handleInfo"
-              >编辑</el-button
             >
+              编辑
+            </el-button>
 
-            <el-button
-              v-else
-              type="success"
-              size="small"
-              @click="saveInfo"
-              >保存</el-button
-            >
+            <template v-else>
+              <el-button
+                type="success"
+                size="small"
+                @click="saveInfo"
+              >
+                保存
+              </el-button>
+
+              <el-button
+                type="warning"
+                size="small"
+                @click="cancelSaveInfo"
+              >
+                取消
+              </el-button>
+            </template>
           </template>
 
           <el-descriptions-item :span="2">
@@ -40,9 +51,39 @@
               头像
             </template>
             <img
+              v-if="currentState === 'view'"
               class="head"
               :src="userInfoAlias.head"
             />
+
+            <div
+              class="handle-head-container"
+              v-else
+              @mouseenter="hoverHeadContainer"
+              @mouseleave="leaveHeadContainer"
+            >
+              <img
+                class="head handle-head"
+                :src="userInfoAlias.head"
+              />
+
+              <div
+                class="head-mantle"
+                v-show="hoverHeadTag"
+                @click="changeHead"
+              >
+                更换
+              </div>
+
+              <BaseImgUpload
+                v-show="false"
+                ref="BaseImgUploadHead"
+                :limitNum="1"
+                postType="head"
+                :uploadHeadTag="true"
+                @uploaded="uploadedHead"
+              />
+            </div>
           </el-descriptions-item>
 
           <el-descriptions-item>
@@ -214,19 +255,34 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/apis/userInfo'
+import { getUserInfo, setUserInfo } from '@/apis/userInfo'
 import { mapState } from 'vuex'
 import resHandle from '@/utils/resHandle'
+import BaseImgUpload from '@/components/base/BaseImgUpload.vue'
+import getUploadTokenHandle from '@/utils/getUploadTokenHandle'
 
 export default {
   name: 'UserInfoPage',
 
+  components: {
+    BaseImgUpload,
+  },
+
   data() {
     return {
       currentState: 'view',
+      hoverHeadTag: false,
       userInfoAlias: {
+        head: '',
         nickname: '',
         telNumber: '',
+        credit: 100,
+        ledou: 0,
+        vip: 1,
+        age: '',
+        sex: '',
+        birthday: '',
+        signature: '',
         school: '',
         name: '',
         identity: '',
@@ -261,6 +317,29 @@ export default {
   },
 
   methods: {
+    // 鼠标移入头像
+    hoverHeadContainer() {
+      this.hoverHeadTag = true
+    },
+
+    // 鼠标移出头像
+    leaveHeadContainer() {
+      this.hoverHeadTag = false
+    },
+
+    // 更换头像
+    changeHead() {
+      // 每次上传前，先清空已上传的图片列表
+      this.$refs.BaseImgUploadHead.$children[0].clearFiles()
+
+      document.getElementsByClassName('el-upload__input')[0].click()
+    },
+
+    // 上传头像回调
+    uploadedHead(imgs) {
+      this.userInfoAlias.head = imgs[0]
+    },
+
     // 获取个人信息
     async getUserInfo() {
       const res = await getUserInfo({ telNumber: this.userInfo.telNumber })
@@ -282,14 +361,27 @@ export default {
     },
 
     // 保存个人信息
-    saveInfo() {
+    async saveInfo() {
+      const { head, nickname, age, sex, birthday, signature } = this.userInfoAlias
+
       if (this.userInfoAlias.nickname.length === 0) {
         this.$message.warning('昵称为必填项')
         this.$refs.nickname.focus()
       } else {
-        this.$message.success('保存成功')
-        this.currentState = 'view'
+        const res = await setUserInfo({ head, nickname, age, sex, birthday, signature })
+        resHandle(res, {
+          finallyHandle: async () => {
+            await this.getUserInfo()
+            window.location.reload()
+          },
+        })
       }
+    },
+
+    // 取消保存个人信息
+    async cancelSaveInfo() {
+      await this.getUserInfo()
+      this.currentState = 'view'
     },
 
     // 年龄输入限制
@@ -300,8 +392,15 @@ export default {
       }
     },
   },
+
   async created() {
     await this.getUserInfo()
+  },
+
+  // 进入个人信息界面前，获取uploadToken
+  async beforeRouteEnter(to, from, next) {
+    await getUploadTokenHandle()
+    next()
   },
 }
 </script>
@@ -325,9 +424,35 @@ export default {
       margin-bottom: 50px;
 
       .head {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
+      }
+
+      .handle-head-container {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+
+        .handle-head,
+        .head-mantle {
+          cursor: pointer;
+        }
+
+        .head-mantle {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.486);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #f2f6fc;
+        }
       }
     }
   }

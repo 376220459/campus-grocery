@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-12 19:59:54
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-27 14:32:12
+ * @LastEditTime: 2022-09-17 19:16:00
  * @FilePath: \campus-grocery\src\components\base\BaseImgUpload.vue
  * @Description: 基础组件-图片上传
 -->
@@ -63,6 +63,11 @@ export default {
     tips: {
       type: String,
       default: '',
+    },
+
+    uploadHeadTag: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -144,6 +149,11 @@ export default {
 
     // 上传图片前执行
     beforeUpload(file) {
+      // 如果是上传图像，则在每次上传新图片前，都需要删除旧图片
+      if (this.uploadHeadTag) {
+        this.uploadedImgs[0] && this.beforeRemove(this.uploadedImgs[0])
+      }
+
       this.qiniuData.key = this.generateKey(file.name)
     },
 
@@ -197,6 +207,13 @@ export default {
                   // 从上传文件列表删除后，需要从uploadedImgs中删除对应图片
                   this.uploadedImgs.splice(imgIndex, 1)
                   this.$emit('remove', img.url)
+
+                  // 根据上传类型返回消息提示
+                  if (this.uploadHeadTag) {
+                    this.$message.success('头像已更换')
+                  } else {
+                    this.$message.success('图片删除成功')
+                  }
                 },
               })
               reslove()
