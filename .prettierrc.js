@@ -11,4 +11,5 @@ module.exports = {
   htmlWhitespaceSensitivity: 'css', // 根据显示样式决定 html 要不要折行
   arrowParens: 'avoid', // 只有一个参数的箭头函数的参数是否带圆括号(avoid表示 不必要)
   endOfLine: 'auto', // 设置换行风格,可选值：lf / crlf / cr / auto
+  singleAttributePerLine: true, // 在Html，Vue，JSX标签中，如果属性超过1个，每个属性是否被迫占用一行
 }
