@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-28 14:55:56
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-09-18 17:54:12
+ * @LastEditTime: 2022-09-18 19:09:28
  * @FilePath: \campus-grocery\src\views\UserInfoPage.vue
  * @Description: 用户个人信息界面
 -->
@@ -427,6 +427,7 @@ export default {
         width: 60px;
         height: 60px;
         border-radius: 50%;
+        object-fit: cover;
       }
 
       .handle-head-container {

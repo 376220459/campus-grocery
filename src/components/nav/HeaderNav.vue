@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-08 15:30:52
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-28 16:18:28
+ * @LastEditTime: 2022-09-18 19:12:17
  * @FilePath: \campus-grocery\src\components\nav\HeaderNav.vue
  * @Description: 头部导航栏组件
 -->
@@ -426,6 +426,7 @@ export default {
       cursor: pointer;
       display: flex;
       align-items: center;
+      object-fit: cover;
     }
 
     .user-message-text {
