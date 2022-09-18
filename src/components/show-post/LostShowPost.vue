@@ -249,6 +249,7 @@ export default {
       border-radius: 10px;
       padding: 30px 20px;
       margin: 30px 0;
+      white-space: pre-wrap;
     }
 
     .attribute-container {

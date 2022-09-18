@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-15 14:37:07
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-19 16:48:07
+ * @LastEditTime: 2022-09-18 19:52:39
  * @FilePath: \campus-grocery\src\components\show-post\TransactionShowPost.vue
  * @Description: 展示二手交易帖子组件
 -->

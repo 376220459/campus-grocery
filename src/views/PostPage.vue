@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-11 19:41:00
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-15 14:43:52
+ * @LastEditTime: 2022-09-18 19:30:44
  * @FilePath: \campus-grocery\src\views\PostPage.vue
  * @Description: 发布帖子界面
 -->
@@ -15,7 +15,7 @@
           二手交易
         </span>
 
-        <TransactionPostForm />
+        <TransactionPostForm v-if="postType === 'transaction'" />
       </el-tab-pane>
 
       <el-tab-pane name="campus">
@@ -24,7 +24,7 @@
           校园趣闻轶事
         </span>
 
-        <CampusPostForm />
+        <CampusPostForm v-if="postType === 'campus'" />
       </el-tab-pane>
 
       <el-tab-pane name="lost">
@@ -33,7 +33,7 @@
           失物招领
         </span>
 
-        <LostPostForm />
+        <LostPostForm v-if="postType === 'lost'" />
       </el-tab-pane>
 
       <el-tab-pane name="advert">
@@ -42,7 +42,7 @@
           广告
         </span>
 
-        <AdvertPostForm />
+        <AdvertPostForm v-if="postType === 'advert'" />
       </el-tab-pane>
     </el-tabs>
   </el-main>

@@ -2,7 +2,7 @@
  * @Author: Hole 376220459@qq.com
  * @Date: 2022-08-15 14:37:07
  * @LastEditors: Hole 376220459@qq.com
- * @LastEditTime: 2022-08-19 17:00:05
+ * @LastEditTime: 2022-09-18 19:52:27
  * @FilePath: \campus-grocery\src\components\show-post\AdvertShowPost.vue
  * @Description: 展示广告帖子组件
 -->
@@ -237,6 +237,7 @@ export default {
       border-radius: 10px;
       padding: 30px 20px;
       margin: 30px 0;
+      white-space: pre-wrap;
     }
 
     .attribute-container {
